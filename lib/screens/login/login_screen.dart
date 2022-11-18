@@ -2,6 +2,9 @@ import 'dart:developer';
 
 import 'package:flight_booking/core/constants/image_sources.dart';
 import 'package:flight_booking/core/constants/text_validation.dart';
+import 'package:flight_booking/core/routes/route_names.dart';
+import 'package:flight_booking/core/services/navigation_service.dart';
+import 'package:flight_booking/core/services/service_locator.dart';
 import 'package:flight_booking/widgets/buttons.dart';
 import 'package:flight_booking/widgets/form_fields.dart';
 import 'package:flutter/material.dart';
@@ -59,7 +62,8 @@ class LoginScreen extends StatelessWidget {
                       height: 20.h,
                     ),
                     DefaultButton("Sign In", () {
-                      // loginValidation(context);
+                      locator<NavigationService>()
+                          .pushReplacementNamed(Routes.homeScreen);
                     }),
                     SizedBox(
                       height: 10.h,
