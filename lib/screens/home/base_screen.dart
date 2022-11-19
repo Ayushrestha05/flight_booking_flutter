@@ -17,7 +17,7 @@ class BaseScreen extends StatelessWidget {
           controller: _controller,
           onPageChanged: ((value) => _currentPage.value = value),
           children: [
-            Container(),
+            ExploreScreen(),
             Container(),
             MyTicketsScreen(),
             Container(),
