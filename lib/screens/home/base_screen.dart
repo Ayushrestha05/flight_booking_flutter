@@ -1,4 +1,5 @@
 import 'package:flight_booking/core/constants/image_sources.dart';
+import 'package:flight_booking/core/routes/export_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -11,15 +12,17 @@ class BaseScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-          child: PageView(
-        controller: _controller,
-        onPageChanged: ((value) => _currentPage.value = value),
-        children: [
-          Container(),
-          Container(),
-          Container(),
-          Container(),
-        ],
+          child: Expanded(
+        child: PageView(
+          controller: _controller,
+          onPageChanged: ((value) => _currentPage.value = value),
+          children: [
+            Container(),
+            Container(),
+            MyTicketsScreen(),
+            Container(),
+          ],
+        ),
       )),
       bottomNavigationBar: ValueListenableBuilder<int>(
           valueListenable: _currentPage,
