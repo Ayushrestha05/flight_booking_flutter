@@ -1,5 +1,6 @@
 import 'package:flight_booking/core/constants/image_sources.dart';
 import 'package:flight_booking/core/routes/export_routes.dart';
+import 'package:flight_booking/screens/home/search_screen/search_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -18,7 +19,7 @@ class BaseScreen extends StatelessWidget {
           onPageChanged: ((value) => _currentPage.value = value),
           children: [
             ExploreScreen(),
-            Container(),
+            SearchScreen(),
             MyTicketsScreen(),
             Container(),
           ],
