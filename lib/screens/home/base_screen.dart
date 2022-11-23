@@ -13,17 +13,15 @@ class BaseScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-          child: Expanded(
-        child: PageView(
-          controller: _controller,
-          onPageChanged: ((value) => _currentPage.value = value),
-          children: [
-            ExploreScreen(),
-            SearchScreen(),
-            MyTicketsScreen(),
-            Container(),
-          ],
-        ),
+          child: PageView(
+        controller: _controller,
+        onPageChanged: ((value) => _currentPage.value = value),
+        children: [
+          ExploreScreen(),
+          SearchScreen(),
+          MyTicketsScreen(),
+          Container(),
+        ],
       )),
       bottomNavigationBar: ValueListenableBuilder<int>(
           valueListenable: _currentPage,
