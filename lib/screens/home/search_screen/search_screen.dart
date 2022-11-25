@@ -94,6 +94,9 @@ class _SearchScreenState extends State<SearchScreen>
               padding: EdgeInsets.all(8.w),
               child: Column(
                 children: [
+                  SizedBox(
+                    height: 20.h,
+                  ),
                   Container(
                     decoration: BoxDecoration(
                         color: Color(0xFFF6F6F4),
@@ -123,7 +126,7 @@ class _SearchScreenState extends State<SearchScreen>
                     ),
                   ),
                   SizedBox(
-                    height: 8.h,
+                    height: 12.h,
                   ),
                   locationDropdown(
                       airportList: airportList,
@@ -134,7 +137,7 @@ class _SearchScreenState extends State<SearchScreen>
                         setState(() {});
                       }),
                   SizedBox(
-                    height: 8.h,
+                    height: 12.h,
                   ),
                   locationDropdown(
                     airportList: airportList,
@@ -146,7 +149,7 @@ class _SearchScreenState extends State<SearchScreen>
                     },
                   ),
                   SizedBox(
-                    height: 8.h,
+                    height: 12.h,
                   ),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -170,7 +173,7 @@ class _SearchScreenState extends State<SearchScreen>
                     ],
                   ),
                   SizedBox(
-                    height: 8.h,
+                    height: 12.h,
                   ),
                   //
                   InkWell(
@@ -210,7 +213,7 @@ class _SearchScreenState extends State<SearchScreen>
                     ),
                   ),
                   SizedBox(
-                    height: 8.h,
+                    height: 12.h,
                   ),
                   DefaultButton("Search for Flights", () {})
                 ],
@@ -349,47 +352,49 @@ class _SearchScreenState extends State<SearchScreen>
             )));
   }
 
-  DropdownButton2 locationDropdown(
+  Widget locationDropdown(
       {required List<DropdownMenuItem<dynamic>> airportList,
       required dynamic value,
       required String hint,
       required Function(dynamic)? onChanged}) {
-    return DropdownButton2(
-      items: airportList,
-      value: value,
-      customButton: Container(
-        height: 55.h,
-        padding: EdgeInsets.symmetric(horizontal: 10.w),
-        width: double.maxFinite,
-        decoration: BoxDecoration(
-            border: Border.all(color: const Color(0xFFBEC2C9)),
-            borderRadius: BorderRadius.circular(10.r)),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              hint,
-              style: TextStyle(
-                  fontFamily: "SFPro",
-                  fontWeight: FontWeight.bold,
-                  color: const Color(0xFFBEC2C9),
-                  fontSize: 14.sp),
-            ),
-            Visibility(
-                visible: value != null,
-                child: Text(
-                  "${AirportNames.getAirportName(airportCode: value ?? "")} ($value)",
-                  style: TextStyle(
-                      fontFamily: "SFPro",
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16.sp),
-                )),
-          ],
+    return DropdownButtonHideUnderline(
+      child: DropdownButton2(
+        items: airportList,
+        value: value,
+        customButton: Container(
+          height: 55.h,
+          padding: EdgeInsets.symmetric(horizontal: 10.w),
+          width: double.maxFinite,
+          decoration: BoxDecoration(
+              border: Border.all(color: const Color(0xFFBEC2C9)),
+              borderRadius: BorderRadius.circular(10.r)),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                hint,
+                style: TextStyle(
+                    fontFamily: "SFPro",
+                    fontWeight: FontWeight.bold,
+                    color: const Color(0xFFBEC2C9),
+                    fontSize: 14.sp),
+              ),
+              Visibility(
+                  visible: value != null,
+                  child: Text(
+                    "${AirportNames.getAirportName(airportCode: value ?? "")} ($value)",
+                    style: TextStyle(
+                        fontFamily: "SFPro",
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16.sp),
+                  )),
+            ],
+          ),
         ),
+        buttonWidth: double.maxFinite,
+        onChanged: onChanged,
       ),
-      buttonWidth: double.maxFinite,
-      onChanged: onChanged,
     );
   }
 }

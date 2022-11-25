@@ -1,5 +1,6 @@
 import 'package:flight_booking/core/constants/image_sources.dart';
 import 'package:flight_booking/core/routes/export_routes.dart';
+import 'package:flight_booking/screens/home/profile_screen/profile_screen.dart';
 import 'package:flight_booking/screens/home/search_screen/search_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -20,7 +21,7 @@ class BaseScreen extends StatelessWidget {
           ExploreScreen(),
           SearchScreen(),
           MyTicketsScreen(),
-          Container(),
+          ProfileScreen(),
         ],
       )),
       bottomNavigationBar: ValueListenableBuilder<int>(
@@ -47,7 +48,7 @@ class BaseScreen extends StatelessWidget {
                         activeIcon: SvgPicture.asset(
                           e,
                           //TODO Change Color to Theme Color Later on
-                          color: Colors.amber,
+                          color: Color(0xFF03314B),
                         ),
                         label: "",
                       ))
