@@ -11,8 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+class RegisterScreen extends StatelessWidget {
+  const RegisterScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class LoginScreen extends StatelessWidget {
             children: [
               Expanded(
                   child: Image.asset(
-                ImageSource.boarding,
+                ImageSource.registerStock,
                 width: double.maxFinite,
                 fit: BoxFit.cover,
                 excludeFromSemantics: true,
@@ -35,11 +35,20 @@ class LoginScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Login",
+                      "Register",
                       style: GoogleFonts.outfit(
                           fontSize: 32.h,
                           color: Colors.white,
                           fontWeight: FontWeight.w400),
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    CustomTextFormField(
+                      hintText: "Full Name",
+                      onSaved: (String? value) {},
+                      maxLines: 1,
+                      validator: TextValidation.requiredValidation,
                     ),
                     SizedBox(
                       height: 20.h,
@@ -57,46 +66,43 @@ class LoginScreen extends StatelessWidget {
                       hintText: "Password",
                       validator: TextValidation.requiredValidation,
                       onSaved: (String? value) {},
+                      hideEye: true,
                     ),
                     SizedBox(
                       height: 20.h,
                     ),
-                    DefaultButton("Sign In", () {
+                    CustomPasswordTextField(
+                      hintText: "Re-Enter Password",
+                      validator: TextValidation.requiredValidation,
+                      onSaved: (String? value) {},
+                      hideEye: true,
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    DefaultButton("Sign Up", () {
                       locator<NavigationService>()
                           .pushReplacementNamed(Routes.homeScreen);
                     }),
                     SizedBox(
                       height: 10.h,
                     ),
-                    InkWell(
-                      onTap: () {
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (_) => ForgotPasswordScreen()));
-                      },
-                      child: Text(
-                        "Forgot Password",
-                        style: GoogleFonts.outfit(color: Colors.white),
-                      ),
-                    ),
                     SizedBox(
                       height: 15.h,
                     ),
                     GestureDetector(
                       onTap: () {
-                        locator<NavigationService>()
-                            .navigateTo(Routes.registerScreen);
+                        locator<NavigationService>().pop();
                       },
                       child: Container(
                         alignment: Alignment.center,
                         child: RichText(
                           text: TextSpan(children: [
                             TextSpan(
-                                text: "Don't have an account? ",
+                                text: "Already have an account? ",
                                 style: GoogleFonts.outfit(color: Colors.white)),
                             TextSpan(
-                                text: "Sign Up",
+                                text: "Sign In",
                                 style: GoogleFonts.outfit(
                                     color: Colors.lightBlueAccent)),
                           ]),

@@ -49,15 +49,16 @@ class CustomPasswordTextField extends StatelessWidget {
   final String? Function(String?)? validator;
   final Function(String?)? onSaved;
   final TextStyle? textStyle;
+  final bool? hideEye;
   ValueNotifier<bool> _obscureText = ValueNotifier<bool>(true);
 
-  CustomPasswordTextField({
-    super.key,
-    required this.hintText,
-    this.validator,
-    this.onSaved,
-    this.textStyle,
-  });
+  CustomPasswordTextField(
+      {super.key,
+      required this.hintText,
+      this.validator,
+      this.onSaved,
+      this.textStyle,
+      this.hideEye});
 
   @override
   Widget build(BuildContext context) {
@@ -72,14 +73,18 @@ class CustomPasswordTextField extends StatelessWidget {
             decoration: InputDecoration(
               filled: true,
               fillColor: Theme.of(context).scaffoldBackgroundColor,
-              suffixIcon: IconButton(
-                  onPressed: () {
-                    _obscureText.value = !_obscureText.value;
-                  },
-                  icon:
-                      Icon(obscure ? Icons.visibility : Icons.visibility_off)),
-              hintText: "Password",
-              hintStyle: const TextStyle(fontFamily: 'Outfit',),
+              suffixIcon: (hideEye ?? false)
+                  ? null
+                  : IconButton(
+                      onPressed: () {
+                        _obscureText.value = !_obscureText.value;
+                      },
+                      icon: Icon(
+                          obscure ? Icons.visibility : Icons.visibility_off)),
+              hintText: hintText,
+              hintStyle: const TextStyle(
+                fontFamily: 'Outfit',
+              ),
               contentPadding:
                   EdgeInsets.only(top: 10.h, left: 16.w, bottom: 10.h),
               border: OutlineInputBorder(

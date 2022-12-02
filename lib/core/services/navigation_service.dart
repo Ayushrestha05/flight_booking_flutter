@@ -14,7 +14,7 @@ class NavigationService {
     );
   }
 
-  void pop(bool value) {
+  void pop([dynamic value]) {
     return navigatorKey.currentState!.pop(value);
   }
 

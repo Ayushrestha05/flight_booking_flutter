@@ -4,6 +4,9 @@ import 'dart:ui';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flight_booking/core/constants/airport_names.dart';
 import 'package:flight_booking/core/constants/image_sources.dart';
+import 'package:flight_booking/core/routes/route_names.dart';
+import 'package:flight_booking/core/services/navigation_service.dart';
+import 'package:flight_booking/core/services/service_locator.dart';
 import 'package:flight_booking/widgets/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -215,7 +218,10 @@ class _SearchScreenState extends State<SearchScreen>
                   SizedBox(
                     height: 12.h,
                   ),
-                  DefaultButton("Search for Flights", () {})
+                  DefaultButton("Search for Flights", () {
+                    locator<NavigationService>()
+                        .navigateTo(Routes.flightListScreen);
+                  })
                 ],
               ),
             ),

@@ -1,6 +1,7 @@
 class ImageSource {
   // Normal Images
   static String boarding = "assets/stocks/boarding.jpg";
+  static String registerStock = "assets/stocks/register.jpg";
 
   //Bottom Navigation SVG Images
   static String homeIcon = "assets/bottom_nav_icons/home.svg";
