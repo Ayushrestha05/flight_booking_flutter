@@ -14,4 +14,8 @@ class ImageSource {
   static String smallPlane = "assets/svg_icons/smallPlane.svg";
   static String bagLimit = "assets/svg_icons/bagLimit.svg";
   static String nepalMap = "assets/svg_icons/np_svg.svg";
+
+  //PNG Images
+  static String esewaIMG = "assets/images/esewa.png";
+  static String khaltiIMG = "assets/images/khalti.png";
 }

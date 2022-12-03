@@ -18,7 +18,7 @@ class MyTicketsScreen extends StatelessWidget {
       child: ListView.builder(
         itemCount: 1,
         itemBuilder: (context, index) {
-          return ticketCard(context, onTap: () {
+          return buildTicketCard(context, onTap: () {
             showFlightDetailBottomSheet(context);
           });
         },

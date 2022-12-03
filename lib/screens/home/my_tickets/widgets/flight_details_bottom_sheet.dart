@@ -1,4 +1,7 @@
 import 'package:flight_booking/core/constants/image_sources.dart';
+import 'package:flight_booking/core/routes/route_names.dart';
+import 'package:flight_booking/core/services/navigation_service.dart';
+import 'package:flight_booking/core/services/service_locator.dart';
 import 'package:flight_booking/widgets/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -66,7 +69,9 @@ showFlightDetailBottomSheet(BuildContext context) {
               height: 15.h,
             ),
             // Book Button
-            DefaultButton("Book Flight", () {}),
+            DefaultButton("Book Flight", () {
+              locator<NavigationService>().navigateTo(Routes.bookContactScreen);
+            }),
             SizedBox(
               height: 15.h,
             ),

@@ -60,7 +60,7 @@ class FlightListScreen extends StatelessWidget {
                 )),
             SliverList(
                 delegate: SliverChildBuilderDelegate(
-                    (context, index) => ticketCard(context, onTap: () {
+                    (context, index) => buildTicketCard(context, onTap: () {
                           showFlightDetailBottomSheet(context);
                         }),
                     childCount: 6))

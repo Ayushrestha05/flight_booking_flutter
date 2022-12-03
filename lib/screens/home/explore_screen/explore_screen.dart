@@ -87,7 +87,7 @@ class ExploreScreen extends StatelessWidget {
                     shrinkWrap: true,
                     itemCount: 5,
                     itemBuilder: (context, index) {
-                      return ticketCard(context);
+                      return buildTicketCard(context);
                     })
               ],
             ),

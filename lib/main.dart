@@ -25,16 +25,16 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(builder: (context, child) {
-      return MaterialApp(
-        title: 'Flight Booking',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: LoginScreen(),
-        onGenerateRoute: RouteGenerator.generateRoute,
-        navigatorKey: NavigationService.navigatorKey,
-      );
-    });
+    return ScreenUtilInit(
+        designSize: const Size(360, 640),
+        builder: (context, child) {
+          return MaterialApp(
+            title: 'Flight Booking',
+            theme: ThemeData(primaryColor: const Color(0xFF03314B)),
+            home: LoginScreen(),
+            onGenerateRoute: RouteGenerator.generateRoute,
+            navigatorKey: NavigationService.navigatorKey,
+          );
+        });
   }
 }
