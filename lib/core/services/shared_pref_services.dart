@@ -179,6 +179,16 @@ class SharedPrefsServices {
     }
   }
 
+  void remove({
+    required String key,
+  }) {
+    try {
+      sharedPreferences!.remove(key);
+    } catch (error) {
+      rethrow;
+    }
+  }
+
   ///FUNC [clearSharedPrefsData] : Clear shared prefs data
   void clearSharedPrefsData() async {
     await sharedPreferences!.clear();

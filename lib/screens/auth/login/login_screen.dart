@@ -3,8 +3,10 @@ import 'dart:developer';
 import 'package:flight_booking/core/constants/image_sources.dart';
 import 'package:flight_booking/core/constants/text_validation.dart';
 import 'package:flight_booking/core/routes/route_names.dart';
+import 'package:flight_booking/core/services/auth_service.dart';
 import 'package:flight_booking/core/services/navigation_service.dart';
 import 'package:flight_booking/core/services/service_locator.dart';
+import 'package:flight_booking/screens/auth/bloc/auth_bloc.dart';
 import 'package:flight_booking/widgets/buttons.dart';
 import 'package:flight_booking/widgets/form_fields.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +14,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+  LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +49,7 @@ class LoginScreen extends StatelessWidget {
                       height: 20.h,
                     ),
                     CustomTextFormField(
+                      controller: _emailController,
                       hintText: "Email",
                       onSaved: (String? value) {},
                       maxLines: 1,
@@ -54,6 +59,7 @@ class LoginScreen extends StatelessWidget {
                       height: 20.h,
                     ),
                     CustomPasswordTextField(
+                      controller: _passwordController,
                       hintText: "Password",
                       validator: TextValidation.requiredValidation,
                       onSaved: (String? value) {},
@@ -61,9 +67,10 @@ class LoginScreen extends StatelessWidget {
                     SizedBox(
                       height: 20.h,
                     ),
-                    DefaultButton("Sign In", () {
-                      locator<NavigationService>()
-                          .pushReplacementNamed(Routes.homeScreen);
+                    DefaultButton("Sign In", () async {
+                      locator<AuthBloc>().add(LoginEvent(
+                          email: _emailController.text,
+                          password: _passwordController.text));
                     }),
                     SizedBox(
                       height: 10.h,

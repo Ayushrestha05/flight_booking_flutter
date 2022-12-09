@@ -1,6 +1,7 @@
 import 'package:flight_booking/core/routes/route_names.dart';
 import 'package:flight_booking/core/services/navigation_service.dart';
 import 'package:flight_booking/core/services/service_locator.dart';
+import 'package:flight_booking/screens/auth/bloc/auth_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -82,8 +83,7 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   ListTile(
                     onTap: () {
-                      locator<NavigationService>()
-                          .pushReplacementNamed(Routes.loginScreen);
+                      locator<AuthBloc>().add(LogoutEvent());
                     },
                     leading: Icon(Icons.logout_outlined),
                     title: Text("Logout"),

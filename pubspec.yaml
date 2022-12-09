@@ -48,6 +48,12 @@ dependencies:
   intl: ^0.17.0
   country_picker: ^2.0.17
   animated_size_and_fade: ^3.0.0
+  dio: ^4.0.6
+  pretty_dio_logger: ^1.1.1
+  dio_http_cache: ^0.3.0
+  dartz: ^0.10.1
+  flutter_bloc: ^8.1.1
+  equatable: ^2.0.5
 
 dev_dependencies:
   flutter_test:

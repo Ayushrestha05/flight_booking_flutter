@@ -1,4 +1,7 @@
+import 'package:flight_booking/bloc_provider.dart';
+import 'package:flight_booking/screens/auth/bloc/auth_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'core/routes/export_routes.dart';
@@ -18,7 +21,7 @@ void main() async {
       ),
     ],
   );
-  runApp(const MyApp());
+  runApp(BlocProviders.injectedBlocMyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -31,10 +34,26 @@ class MyApp extends StatelessWidget {
           return MaterialApp(
             title: 'Flight Booking',
             theme: ThemeData(primaryColor: const Color(0xFF03314B)),
-            home: LoginScreen(),
+            home: const AuthSwitchScreen(),
             onGenerateRoute: RouteGenerator.generateRoute,
             navigatorKey: NavigationService.navigatorKey,
           );
         });
+  }
+}
+
+class AuthSwitchScreen extends StatelessWidget {
+  const AuthSwitchScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<AuthBloc, AuthState>(
+      builder: (context, state) {
+        if (state.profileModel != null) {
+          return BaseScreen();
+        }
+        return LoginScreen();
+      },
+    );
   }
 }

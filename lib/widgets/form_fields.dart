@@ -7,18 +7,21 @@ class CustomTextFormField extends StatelessWidget {
   final Function(String?)? onSaved;
   final int? maxLines;
   final TextStyle? textStyle;
-  const CustomTextFormField({
-    Key? key,
-    required this.hintText,
-    this.validator,
-    this.onSaved,
-    this.maxLines,
-    this.textStyle,
-  }) : super(key: key);
+  final TextEditingController? controller;
+  const CustomTextFormField(
+      {Key? key,
+      required this.hintText,
+      this.validator,
+      this.onSaved,
+      this.maxLines,
+      this.textStyle,
+      this.controller})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: controller,
       validator: validator,
       onSaved: onSaved,
       maxLines: maxLines,
@@ -45,6 +48,7 @@ class CustomTextFormField extends StatelessWidget {
 }
 
 class CustomPasswordTextField extends StatelessWidget {
+  final TextEditingController? controller;
   final String hintText;
   final String? Function(String?)? validator;
   final Function(String?)? onSaved;
@@ -58,6 +62,7 @@ class CustomPasswordTextField extends StatelessWidget {
       this.validator,
       this.onSaved,
       this.textStyle,
+      this.controller,
       this.hideEye});
 
   @override
@@ -66,6 +71,7 @@ class CustomPasswordTextField extends StatelessWidget {
         valueListenable: _obscureText,
         builder: (context, obscure, _) {
           return TextFormField(
+            controller: controller,
             validator: validator,
             onSaved: onSaved,
             obscureText: obscure,
