@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flight_booking/core/utils/date_convert_extension.dart';
+import 'package:intl/intl.dart';
 
 /// Build a Ticket Card Widget
 Widget buildTicketCard(BuildContext context,
@@ -98,7 +99,15 @@ Widget buildTicketCard(BuildContext context,
                           SizedBox(
                             width: 5.w,
                           ),
-                          Text("${flightModel?.baggageLimit ?? 20} KG")
+                          Text("${flightModel?.baggageLimit ?? 20} KG"),
+                          Spacer(),
+                          Text(
+                            "${DateFormat("hh:mm a").format(flightModel?.departureDate ?? DateTime.now())}",
+                            style: TextStyle(
+                                fontFamily: "SFPro",
+                                fontSize: 14.sp,
+                                color: Color(0xFF65676B)),
+                          )
                         ],
                       ),
                     ],

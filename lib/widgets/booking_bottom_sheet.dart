@@ -7,6 +7,7 @@ import 'package:flight_booking/core/routes/route_names.dart';
 import 'package:flight_booking/core/services/navigation_service.dart';
 import 'package:flight_booking/core/services/service_locator.dart';
 import 'package:flight_booking/core/utils/show_toast.dart';
+import 'package:flight_booking/screens/home/search_screen/model/flight_search_view_model.dart';
 import 'package:flight_booking/widgets/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -15,7 +16,10 @@ import 'package:flight_booking/screens/home/my_tickets/widgets/flight_details_bo
 showFlightBookingBottomSheet(
   BuildContext context, {
   bool? isReturn,
+  bool? isReturnNavigate,
   FlightModel? model,
+  BookingModel? bookingModel,
+  FlightSearchViewModel? viewModel,
   int? totalAdults,
   int? totalChildren,
 }) {
@@ -145,7 +149,25 @@ showFlightBookingBottomSheet(
                     toastType: ToastType.error,
                     toastDuration: const Duration(milliseconds: 800));
               } else {
+                //Check if this is a Two-Way Flight
                 if (isReturn ?? false) {
+                  //Check if the Two-Way Flight List Navigation should be done
+                  if (isReturnNavigate ?? false) {
+                    locator<NavigationService>().navigateTo(
+                        Routes.bookContactScreen,
+                        arguments: viewModel!.bookingModel!.copyWith(
+                            departure_flight: model,
+                            departure_class_id: _selectedClass.value));
+                  } else {
+                    locator<NavigationService>().navigateTo(
+                        Routes.returnFlightListScreen,
+                        arguments: viewModel!.copyWith(
+                            bookingModel: BookingModel(
+                                totalAdults: totalAdults,
+                                totalChildren: totalChildren,
+                                arrival_flight: model,
+                                arrival_class_id: _selectedClass.value)));
+                  }
                 } else {
                   locator<NavigationService>().navigateTo(
                       Routes.bookContactScreen,

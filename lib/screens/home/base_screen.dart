@@ -1,5 +1,6 @@
 import 'package:flight_booking/core/constants/image_sources.dart';
 import 'package:flight_booking/core/routes/export_routes.dart';
+import 'package:flight_booking/core/services/cubit/navigation_cubit.dart';
 import 'package:flight_booking/core/services/service_locator.dart';
 import 'package:flight_booking/screens/home/my_tickets/bloc/my_ticket_bloc.dart';
 import 'package:flight_booking/screens/home/profile_screen/profile_screen.dart';
@@ -9,7 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class BaseScreen extends StatelessWidget {
-  final PageController _controller = PageController();
+  final PageController _controller = locator<NavigationCubit>().state;
   final ValueNotifier<int> _currentPage = ValueNotifier(0);
   BaseScreen({super.key});
 

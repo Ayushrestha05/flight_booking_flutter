@@ -38,6 +38,7 @@ class BookingDetailsScreen extends StatelessWidget {
                   flightModel: model.arrival_flight?.flight),
               if (model.departure_flight != null)
                 Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
                       height: 10.h,

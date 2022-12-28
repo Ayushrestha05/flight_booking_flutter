@@ -44,6 +44,7 @@ class BookConfirmationScreen extends StatelessWidget {
             buildTicketCard(context, flightModel: bookingModel.arrival_flight),
             if (bookingModel.departure_flight != null)
               Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
                     height: 10.h,

@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flight_booking/core/model/flight_model.dart';
+import 'package:flight_booking/core/services/cubit/navigation_cubit.dart';
 import 'package:flight_booking/core/services/service_locator.dart';
 import 'package:flight_booking/screens/auth/bloc/auth_bloc.dart';
 import 'package:flight_booking/screens/home/explore_screen/bloc/bloc/explore_bloc.dart';
@@ -143,7 +144,9 @@ class ExploreScreen extends StatelessWidget {
           SizedBox(
             height: 10.h,
           ),
-          DefaultButton("Search for Flights now!", () {}),
+          DefaultButton("Search for Flights now!", () {
+            locator<NavigationCubit>().state.jumpToPage(1);
+          }),
         ],
       ),
     );

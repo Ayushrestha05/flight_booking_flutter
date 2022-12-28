@@ -6,7 +6,9 @@ import 'package:flight_booking/main.dart';
 import 'package:flight_booking/screens/home/explore_screen/bloc/bloc/explore_bloc.dart';
 import 'package:flight_booking/screens/home/my_tickets/model/my_ticket_model.dart';
 import 'package:flight_booking/screens/home/search_screen/bloc/depart/search_bloc.dart';
+import 'package:flight_booking/screens/home/search_screen/bloc/return/return_search_bloc.dart';
 import 'package:flight_booking/screens/home/search_screen/model/flight_search_view_model.dart';
+import 'package:flight_booking/screens/home/search_screen/return_flight_list_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -49,6 +51,16 @@ class RouteGenerator {
             builder: (_) => BlocProvider.value(
                   value: locator<SearchBloc>(),
                   child: FlightListScreen(
+                    flightSearchViewModel: arguments as FlightSearchViewModel,
+                  ),
+                ));
+
+      case Routes.returnFlightListScreen:
+        return MaterialPageRoute(
+            settings: settings,
+            builder: (_) => BlocProvider.value(
+                  value: locator<ReturnSearchBloc>(),
+                  child: ReturnFlightListScreen(
                     flightSearchViewModel: arguments as FlightSearchViewModel,
                   ),
                 ));

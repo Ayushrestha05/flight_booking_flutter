@@ -49,6 +49,11 @@ class ProfileScreen extends StatelessWidget {
                   title: Text("Privacy Policy"),
                   trailing: Icon(Icons.chevron_right),
                 ),
+                ListTile(
+                  leading: Icon(Icons.reviews),
+                  title: Text("Review / Inquiry"),
+                  trailing: Icon(Icons.chevron_right),
+                ),
               ]),
             ),
             Container(

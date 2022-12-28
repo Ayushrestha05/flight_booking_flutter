@@ -36,6 +36,7 @@ class MyApp extends StatelessWidget {
         builder: (context, child) {
           return MaterialApp(
             title: 'Flight Booking',
+            debugShowCheckedModeBanner: false,
             theme: ThemeData(primaryColor: const Color(0xFF03314B)),
             home: const AuthSwitchScreen(),
             builder: BotToastInit(), //1. call BotToastInit

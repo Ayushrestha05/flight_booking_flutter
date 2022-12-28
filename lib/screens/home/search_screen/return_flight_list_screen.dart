@@ -1,42 +1,43 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:flight_booking/core/utils/date_convert_extension.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
+
 import 'package:flight_booking/core/constants/image_sources.dart';
-import 'package:flight_booking/core/model/book_model.dart';
 import 'package:flight_booking/core/model/flight_model.dart';
-import 'package:flight_booking/core/routes/route_names.dart';
-import 'package:flight_booking/core/services/navigation_service.dart';
-import 'package:flight_booking/core/services/service_locator.dart';
 import 'package:flight_booking/screens/home/my_tickets/widgets/flight_sort_bottom_sheet.dart';
-import 'package:flight_booking/screens/home/search_screen/bloc/depart/search_bloc.dart';
 import 'package:flight_booking/screens/home/search_screen/model/flight_search_view_model.dart';
 import 'package:flight_booking/widgets/booking_bottom_sheet.dart';
 import 'package:flight_booking/widgets/departDestination_widget.dart';
 import 'package:flight_booking/widgets/pagination_widget.dart';
 import 'package:flight_booking/widgets/ticketCard_widget.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flight_booking/core/utils/date_convert_extension.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:intl/intl.dart';
 
-import '../my_tickets/widgets/flight_details_bottom_sheet.dart';
+import '../../../core/services/service_locator.dart';
+import 'bloc/return/return_search_bloc.dart';
 
-class FlightListScreen extends StatefulWidget {
-  FlightSearchViewModel flightSearchViewModel;
-  FlightListScreen({super.key, required this.flightSearchViewModel});
+class ReturnFlightListScreen extends StatefulWidget {
+  final FlightSearchViewModel flightSearchViewModel;
+  const ReturnFlightListScreen({
+    Key? key,
+    required this.flightSearchViewModel,
+  }) : super(key: key);
 
   @override
-  State<FlightListScreen> createState() => _FlightListScreenState();
+  State<ReturnFlightListScreen> createState() => _ReturnFlightListScreenState();
 }
 
-class _FlightListScreenState extends State<FlightListScreen> {
+class _ReturnFlightListScreenState extends State<ReturnFlightListScreen> {
   @override
   void initState() {
-    locator<SearchBloc>().add(
+    locator<ReturnSearchBloc>().add(
       InitialSearchEvent(
-          from: widget.flightSearchViewModel.from,
-          to: widget.flightSearchViewModel.to,
-          departureDate: DateFormat('yyyy-MM-dd')
-              .format(widget.flightSearchViewModel.departureDate),
+          from: widget.flightSearchViewModel.to,
+          to: widget.flightSearchViewModel.from,
+          departureDate: DateFormat('yyyy-MM-dd').format(
+              widget.flightSearchViewModel.returnDate ?? DateTime.now()),
           numberOfAdults: widget.flightSearchViewModel.numberOfAdults,
           numberOfChildren: widget.flightSearchViewModel.numberOfChildren ?? 0),
     );
@@ -69,18 +70,17 @@ class _FlightListScreenState extends State<FlightListScreen> {
                         children: <Widget>[
                           departureDestinationWidget(
                               context: context,
-                              departCode: widget.flightSearchViewModel.from,
-                              destinationCode: widget.flightSearchViewModel.to,
+                              departCode: widget.flightSearchViewModel.to,
+                              destinationCode:
+                                  widget.flightSearchViewModel.from,
                               color: Colors.white),
                           Text(
-                            widget.flightSearchViewModel.isRoundTrip == true
-                                ? 'Round Trip'
-                                : 'One Way',
+                            'One Way',
                             style:
                                 TextStyle(fontSize: 14.sp, color: Colors.white),
                           ),
                           Text(
-                            widget.flightSearchViewModel.departureDate
+                            widget.flightSearchViewModel.returnDate!
                                 .convertToDateTimeString(),
                             style:
                                 TextStyle(fontSize: 20.sp, color: Colors.white),
@@ -95,11 +95,11 @@ class _FlightListScreenState extends State<FlightListScreen> {
                   )),
             ];
           },
-          body: BlocBuilder<SearchBloc, SearchState>(
+          body: BlocBuilder<ReturnSearchBloc, ReturnSearchState>(
             builder: (context, state) {
-              if (state.status == SearchStatus.loading) {
+              if (state.status == ReturnSearchStatus.loading) {
                 return Center(child: CircularProgressIndicator());
-              } else if (state.status == SearchStatus.success) {
+              } else if (state.status == ReturnSearchStatus.success) {
                 if (state.searchModel!.flights?.length == 0) {
                   return Center(
                       child: Column(
@@ -122,7 +122,7 @@ class _FlightListScreenState extends State<FlightListScreen> {
                 } else {
                   return SmartListViewWithPagination(
                       onLoading: () {
-                        locator<SearchBloc>().add(FetchMoreSearchEvent(
+                        locator<ReturnSearchBloc>().add(FetchMoreSearchEvent(
                             from: widget.flightSearchViewModel.from,
                             to: widget.flightSearchViewModel.to,
                             departureDate: DateFormat('yyyy-MM-dd').format(
@@ -144,23 +144,22 @@ class _FlightListScreenState extends State<FlightListScreen> {
                               state.searchModel?.flights?[index];
                           return buildTicketCard(context, flightModel: model,
                               onTap: () {
-                            showFlightBookingBottomSheet(
-                              context,
-                              model: model!,
-                              totalAdults:
-                                  widget.flightSearchViewModel.numberOfAdults,
-                              totalChildren: widget
-                                      .flightSearchViewModel.numberOfChildren ??
-                                  0,
-                              isReturn:
-                                  widget.flightSearchViewModel.isRoundTrip,
-                              viewModel: widget.flightSearchViewModel,
-                            );
+                            showFlightBookingBottomSheet(context,
+                                model: model!,
+                                totalAdults:
+                                    widget.flightSearchViewModel.numberOfAdults,
+                                totalChildren: widget.flightSearchViewModel
+                                        .numberOfChildren ??
+                                    0,
+                                isReturn:
+                                    widget.flightSearchViewModel.isRoundTrip,
+                                isReturnNavigate: true,
+                                viewModel: widget.flightSearchViewModel);
                           });
                         },
                       ));
                 }
-              } else if (state.status == SearchStatus.failure) {
+              } else if (state.status == ReturnSearchStatus.failure) {
                 return Center(
                   child: Text('Something went wrong!'),
                 );
