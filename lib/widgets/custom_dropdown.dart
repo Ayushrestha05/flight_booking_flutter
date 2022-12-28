@@ -5,14 +5,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 Widget customDropDown(ValueNotifier notifier,
     {required List<DropdownMenuItem> items,
     required String hint,
+    Function(dynamic)? onChanged,
     bool? validate = true}) {
   return ValueListenableBuilder(
       valueListenable: notifier,
       builder: (context, value, _) {
-        return DropdownButtonFormField2(
+        return DropdownButtonFormField2<dynamic>(
           value: value,
           items: items,
-          onChanged: (value) => notifier.value = value,
+          onChanged: onChanged ?? (value) => notifier.value = value,
           validator: (value) {
             if (value == null && (validate ?? true)) {
               return "\t\t\t\tPlease Select a Value";
@@ -34,7 +35,11 @@ Widget customDropDown(ValueNotifier notifier,
       });
 }
 
-Widget buildTitleDropDown(ValueNotifier title) {
+Widget buildTitleDropDown({
+  required ValueNotifier title,
+  Function(dynamic)? onChanged,
+  bool? validate = false,
+}) {
   return customDropDown(title,
       items: [
         DropdownMenuItem(
@@ -58,30 +63,41 @@ Widget buildTitleDropDown(ValueNotifier title) {
           value: null,
         ),
       ],
+      onChanged: onChanged,
       hint: "Title",
-      validate: false);
+      validate: validate);
 }
 
-Widget buildGenderDropDown(ValueNotifier gender) {
+Widget buildGenderDropDown({
+  required ValueNotifier gender,
+  Function(dynamic)? onChanged,
+  bool? validate = false,
+}) {
   return customDropDown(gender,
       items: [
         DropdownMenuItem(
           child: Text("Male"),
-          value: "Mr.",
+          value: "male",
         ),
         DropdownMenuItem(
           child: Text("Female"),
-          value: "Mrs.",
+          value: "female",
         ),
         DropdownMenuItem(
           child: Text("Others"),
-          value: "Miss",
+          value: "others",
         ),
       ],
+      onChanged: onChanged,
+      validate: validate,
       hint: "Gender");
 }
 
-Widget buildDocumentDropDown(ValueNotifier document) {
+Widget buildDocumentDropDown({
+  required ValueNotifier document,
+  Function(dynamic)? onChanged,
+  bool? validate = false,
+}) {
   return customDropDown(document,
       items: [
         DropdownMenuItem(
@@ -101,5 +117,7 @@ Widget buildDocumentDropDown(ValueNotifier document) {
           value: "id-card",
         ),
       ],
+      validate: validate,
+      onChanged: onChanged,
       hint: "Document Type");
 }

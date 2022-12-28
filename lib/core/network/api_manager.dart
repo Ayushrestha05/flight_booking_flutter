@@ -4,7 +4,6 @@ import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_http_cache/dio_http_cache.dart';
 import 'package:flight_booking/core/network/api_interceptor.dart';
-import 'package:flutter/foundation.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 class ApiManager {
@@ -16,7 +15,10 @@ class ApiManager {
 
   ApiManager() {
     BaseOptions options = BaseOptions(
-      baseUrl: "http://192.168.1.80:8000/api",
+      baseUrl: "http://192.168.1.79:8000/api",
+      validateStatus: (status) {
+        return status! < 500;
+      },
       connectTimeout: _connectTimeout,
       receiveTimeout: _receiveTimeout,
       contentType: Headers.jsonContentType,

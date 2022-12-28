@@ -5,6 +5,7 @@ class CustomTextFormField extends StatelessWidget {
   final String hintText;
   final String? Function(String?)? validator;
   final Function(String?)? onSaved;
+  final Function(String?)? onChanged;
   final int? maxLines;
   final TextStyle? textStyle;
   final TextEditingController? controller;
@@ -13,6 +14,7 @@ class CustomTextFormField extends StatelessWidget {
       required this.hintText,
       this.validator,
       this.onSaved,
+      this.onChanged,
       this.maxLines,
       this.textStyle,
       this.controller})
@@ -24,6 +26,7 @@ class CustomTextFormField extends StatelessWidget {
       controller: controller,
       validator: validator,
       onSaved: onSaved,
+      onChanged: onChanged,
       maxLines: maxLines,
       keyboardType: TextInputType.emailAddress,
       style: textStyle,

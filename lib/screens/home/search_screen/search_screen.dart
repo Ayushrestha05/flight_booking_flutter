@@ -7,6 +7,7 @@ import 'package:flight_booking/core/constants/image_sources.dart';
 import 'package:flight_booking/core/routes/route_names.dart';
 import 'package:flight_booking/core/services/navigation_service.dart';
 import 'package:flight_booking/core/services/service_locator.dart';
+import 'package:flight_booking/screens/home/search_screen/model/flight_search_view_model.dart';
 import 'package:flight_booking/widgets/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -27,6 +28,9 @@ class _SearchScreenState extends State<SearchScreen>
   ValueNotifier<DateTime?> departDate = ValueNotifier(null);
   ValueNotifier<DateTime?> returnDate = ValueNotifier(null);
   int? adultCount, childCount;
+
+  //Form Key
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -89,140 +93,160 @@ class _SearchScreenState extends State<SearchScreen>
               ],
             ),
           )),
-          Card(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16.r)),
-            margin: EdgeInsets.all(12.sp),
-            child: Padding(
-              padding: EdgeInsets.all(8.w),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                        color: Color(0xFFF6F6F4),
-                        borderRadius: BorderRadius.circular(10.r)),
-                    child: TabBar(
-                      controller: _tabController,
-                      indicator: BoxDecoration(
-                        borderRadius: BorderRadius.circular(
-                          10.r,
-                        ),
-                        color: const Color(0xFF03314B),
-                      ),
-                      labelColor: Colors.white,
-                      unselectedLabelColor: Color(0xFFBEC2C9),
-                      labelStyle: TextStyle(
-                          fontFamily: "SFPro",
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16.sp),
-                      tabs: const [
-                        Tab(
-                          text: 'One Way',
-                        ),
-                        Tab(
-                          text: 'Round Trip',
-                        ),
-                      ],
+          Form(
+            key: _formKey,
+            child: Card(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16.r)),
+              margin: EdgeInsets.all(12.sp),
+              child: Padding(
+                padding: EdgeInsets.all(8.w),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 20.h,
                     ),
-                  ),
-                  SizedBox(
-                    height: 12.h,
-                  ),
-                  locationDropdown(
-                      airportList: airportList,
-                      value: departFrom,
-                      hint: "From",
-                      onChanged: (v) {
-                        departFrom = v;
-                        setState(() {});
-                      }),
-                  SizedBox(
-                    height: 12.h,
-                  ),
-                  locationDropdown(
-                    airportList: airportList,
-                    value: destinationTo,
-                    hint: "To",
-                    onChanged: (v) {
-                      destinationTo = v;
-                      setState(() {});
-                    },
-                  ),
-                  SizedBox(
-                    height: 12.h,
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      DateSelector(
-                        date: departDate,
-                        hintText: 'Depart',
-                      ),
-                      _tabController.index == 1
-                          ? SizedBox(
-                              width: 10.w,
-                            )
-                          : Container(),
-                      _tabController.index == 1
-                          ? DateSelector(
-                              date: returnDate,
-                              hintText: 'Return',
-                              firstDate: departDate.value,
-                            )
-                          : Container()
-                    ],
-                  ),
-                  SizedBox(
-                    height: 12.h,
-                  ),
-                  //
-                  InkWell(
-                    onTap: () async {
-                      List? values = await passengerDialog(context);
-                      if (values != null) {
-                        adultCount = values[0];
-                        childCount = values[1];
-                        setState(() {});
-                      }
-                    },
-                    child: Container(
-                      height: 55.h,
-                      padding: EdgeInsets.symmetric(horizontal: 10.w),
-                      width: double.maxFinite,
+                    Container(
                       decoration: BoxDecoration(
-                          border: Border.all(color: const Color(0xFFBEC2C9)),
+                          color: Color(0xFFF6F6F4),
                           borderRadius: BorderRadius.circular(10.r)),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Passengers',
-                            style: TextStyle(
-                                fontFamily: "SFPro",
-                                fontWeight: FontWeight.bold,
-                                color: const Color(0xFFBEC2C9),
-                                fontSize: 16.sp),
+                      child: TabBar(
+                        controller: _tabController,
+                        indicator: BoxDecoration(
+                          borderRadius: BorderRadius.circular(
+                            10.r,
                           ),
-                          Visibility(
-                              visible: adultCount != null || childCount != null,
-                              child:
-                                  Text("$adultCount Adult, $childCount Child"))
+                          color: const Color(0xFF03314B),
+                        ),
+                        labelColor: Colors.white,
+                        unselectedLabelColor: Color(0xFFBEC2C9),
+                        labelStyle: TextStyle(
+                            fontFamily: "SFPro",
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16.sp),
+                        tabs: const [
+                          Tab(
+                            text: 'One Way',
+                          ),
+                          Tab(
+                            text: 'Round Trip',
+                          ),
                         ],
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 12.h,
-                  ),
-                  DefaultButton("Search for Flights", () {
-                    locator<NavigationService>()
-                        .navigateTo(Routes.flightListScreen);
-                  })
-                ],
+                    SizedBox(
+                      height: 12.h,
+                    ),
+                    locationDropdown(
+                        airportList: airportList,
+                        value: departFrom,
+                        hint: "From",
+                        onChanged: (v) {
+                          departFrom = v;
+                          setState(() {});
+                        }),
+                    SizedBox(
+                      height: 12.h,
+                    ),
+                    locationDropdown(
+                      airportList: airportList,
+                      value: destinationTo,
+                      hint: "To",
+                      onChanged: (v) {
+                        destinationTo = v;
+                        setState(() {});
+                      },
+                    ),
+                    SizedBox(
+                      height: 12.h,
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        DateSelector(
+                          date: departDate,
+                          hintText: 'Depart',
+                        ),
+                        _tabController.index == 1
+                            ? SizedBox(
+                                width: 10.w,
+                              )
+                            : Container(),
+                        _tabController.index == 1
+                            ? DateSelector(
+                                date: returnDate,
+                                hintText: 'Return',
+                                firstDate: departDate.value,
+                              )
+                            : Container()
+                      ],
+                    ),
+                    SizedBox(
+                      height: 12.h,
+                    ),
+                    //
+                    InkWell(
+                      onTap: () async {
+                        List? values = await passengerDialog(context);
+                        if (values != null) {
+                          adultCount = values[0];
+                          childCount = values[1];
+                          setState(() {});
+                        }
+                      },
+                      child: Container(
+                        height: 55.h,
+                        padding: EdgeInsets.symmetric(horizontal: 10.w),
+                        width: double.maxFinite,
+                        decoration: BoxDecoration(
+                            border: Border.all(color: const Color(0xFFBEC2C9)),
+                            borderRadius: BorderRadius.circular(10.r)),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Passengers',
+                              style: TextStyle(
+                                  fontFamily: "SFPro",
+                                  fontWeight: FontWeight.bold,
+                                  color: const Color(0xFFBEC2C9),
+                                  fontSize: 16.sp),
+                            ),
+                            Visibility(
+                                visible:
+                                    adultCount != null || childCount != null,
+                                child: Text(
+                                    "$adultCount Adult, $childCount Child",
+                                    style: TextStyle(
+                                        fontFamily: "SFPro",
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                        fontSize: 14.sp)))
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 12.h,
+                    ),
+                    DefaultButton("Search for Flights", () {
+                      if (_formKey.currentState!.validate()) {
+                        locator<NavigationService>()
+                            .navigateTo(Routes.flightListScreen,
+                                arguments: FlightSearchViewModel(
+                                  from: departFrom!,
+                                  to: destinationTo!,
+                                  departureDate: departDate.value!,
+                                  returnDate: returnDate.value,
+                                  isRoundTrip: _tabController.index == 1,
+                                  numberOfAdults: adultCount ?? 1,
+                                  numberOfChildren: childCount,
+                                ));
+                      }
+                    })
+                  ],
+                ),
               ),
             ),
           ),

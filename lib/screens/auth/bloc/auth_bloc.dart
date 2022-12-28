@@ -17,6 +17,20 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc() : super(AuthState()) {
     on<AuthEvent>((event, emit) {});
 
+    on<CheckAuthEvent>((event, emit) async {
+      String? token =
+          locator<SharedPrefsServices>().getString(key: 'auth_token');
+      String? userData =
+          locator<SharedPrefsServices>().getString(key: 'user_data');
+
+      if (token != null && userData != null) {
+        emit(AuthState(
+            profileModel: ProfileModel.fromSharedPrefs(userData)));
+      } else {
+        emit(AuthState());
+      }
+    });
+
     on<LoginEvent>((event, emit) async {
       Either<ProfileModel, Failure> data =
           await AuthService.login(email: event.email, password: event.password);

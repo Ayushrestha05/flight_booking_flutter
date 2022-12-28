@@ -54,6 +54,9 @@ dependencies:
   dartz: ^0.10.1
   flutter_bloc: ^8.1.1
   equatable: ^2.0.5
+  pull_to_refresh: ^2.0.0
+  bot_toast: ^4.0.3
+  form_field_validator: ^1.1.0
 
 dev_dependencies:
   flutter_test:
@@ -84,6 +87,7 @@ flutter:
     - assets/bottom_nav_icons/
     - assets/svg_icons/
     - assets/images/
+    - assets/placeholder/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

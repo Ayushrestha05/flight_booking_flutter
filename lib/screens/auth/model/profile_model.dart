@@ -26,7 +26,7 @@ class ProfileModel {
     };
   }
 
-  factory ProfileModel.fromMap(Map<String, dynamic> map) {
+  factory ProfileModel.fromMap(Map map) {
     return ProfileModel(
       id: map['user']['id'],
       name: map['user']['name'],
@@ -39,5 +39,18 @@ class ProfileModel {
   String toJson() => json.encode(toMap());
 
   factory ProfileModel.fromJson(String source) =>
-      ProfileModel.fromMap(json.decode(source) as Map<String, dynamic>);
+      ProfileModel.fromMap(json.decode(source) as Map);
+
+  factory ProfileModel.fromSharedPrefs(String? jsonData) {
+    var parse = jsonDecode(jsonData!);
+    Map map = jsonDecode(parse);
+    print(map.runtimeType);
+    return ProfileModel(
+      id: map['id'],
+      name: map['name'],
+      email: map['email'],
+      profileImage: map['profileImage'],
+      token: map['token'],
+    );
+  }
 }

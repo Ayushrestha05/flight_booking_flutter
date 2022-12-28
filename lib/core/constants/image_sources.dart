@@ -14,8 +14,12 @@ class ImageSource {
   static String smallPlane = "assets/svg_icons/smallPlane.svg";
   static String bagLimit = "assets/svg_icons/bagLimit.svg";
   static String nepalMap = "assets/svg_icons/np_svg.svg";
+  static String noFlightSVG = "assets/svg_icons/no-flight.svg";
 
   //PNG Images
   static String esewaIMG = "assets/images/esewa.png";
   static String khaltiIMG = "assets/images/khalti.png";
+
+  //Placeholder Images
+  static String imagePlaceholder = "assets/placeholder/image.jpg";
 }

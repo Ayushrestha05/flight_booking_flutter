@@ -34,7 +34,7 @@ class Failure {
 }
 
 //just to decode and return json if response body is in json format, else it will return failure with message, Error.
-Either<Map<String, dynamic>, Failure> decodeJson(Response response) {
+Either<dynamic, Failure> decodeJson(Response response) {
   List statusCodeList = [
     200,
     201,

@@ -7,6 +7,6 @@ class BlocProviders {
   BlocProviders._();
 
   static injectedBlocMyApp() => MultiBlocProvider(providers: [
-        BlocProvider.value(value: locator<AuthBloc>()),
+        BlocProvider.value(value: locator<AuthBloc>()..add(CheckAuthEvent())),
       ], child: const MyApp());
 }

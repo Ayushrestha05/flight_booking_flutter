@@ -1,8 +1,11 @@
 import 'package:flight_booking/core/constants/image_sources.dart';
 import 'package:flight_booking/core/routes/export_routes.dart';
+import 'package:flight_booking/core/services/service_locator.dart';
+import 'package:flight_booking/screens/home/my_tickets/bloc/my_ticket_bloc.dart';
 import 'package:flight_booking/screens/home/profile_screen/profile_screen.dart';
 import 'package:flight_booking/screens/home/search_screen/search_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class BaseScreen extends StatelessWidget {
@@ -20,7 +23,10 @@ class BaseScreen extends StatelessWidget {
         children: [
           ExploreScreen(),
           SearchScreen(),
-          MyTicketsScreen(),
+          BlocProvider.value(
+            value: locator<MyTicketBloc>(),
+            child: MyTicketsScreen(),
+          ),
           ProfileScreen(),
         ],
       )),

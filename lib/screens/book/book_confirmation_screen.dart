@@ -1,11 +1,21 @@
+import 'package:bot_toast/bot_toast.dart';
+import 'package:dartz/dartz.dart';
 import 'package:flight_booking/core/constants/image_sources.dart';
+import 'package:flight_booking/core/model/book_model.dart';
+import 'package:flight_booking/core/routes/route_names.dart';
+import 'package:flight_booking/core/services/navigation_service.dart';
+import 'package:flight_booking/core/services/service_locator.dart';
+import 'package:flight_booking/core/utils/show_toast.dart';
+import 'package:flight_booking/screens/book/repository/booking_repo.dart';
+import 'package:flight_booking/widgets/buttons.dart';
 import 'package:flight_booking/widgets/screen_padding.dart';
 import 'package:flight_booking/widgets/ticketCard_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BookConfirmationScreen extends StatelessWidget {
-  const BookConfirmationScreen({super.key});
+  final BookingModel bookingModel;
+  const BookConfirmationScreen({super.key, required this.bookingModel});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +37,26 @@ class BookConfirmationScreen extends StatelessWidget {
             SizedBox(
               height: 10.h,
             ),
-            buildTicketCard(context),
+            Text(
+              'Going Flight',
+              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+            ),
+            buildTicketCard(context, flightModel: bookingModel.arrival_flight),
+            if (bookingModel.departure_flight != null)
+              Column(
+                children: [
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  Text(
+                    'Returning Flight',
+                    style:
+                        TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+                  ),
+                  buildTicketCard(context,
+                      flightModel: bookingModel.departure_flight),
+                ],
+              ),
             SizedBox(
               height: 10.h,
             ),
@@ -49,7 +78,7 @@ class BookConfirmationScreen extends StatelessWidget {
                         SizedBox(
                           width: 10.w,
                         ),
-                        Expanded(child: Text('Sanskriti Pokharel'))
+                        Expanded(child: Text(bookingModel.name ?? ''))
                       ],
                     ),
                     SizedBox(
@@ -61,33 +90,23 @@ class BookConfirmationScreen extends StatelessWidget {
                         SizedBox(
                           width: 10.w,
                         ),
-                        Expanded(child: Text('98XX-XXXXXX'))
+                        Expanded(child: Text(bookingModel.phone ?? ''))
                       ],
                     ),
                     SizedBox(
                       height: 6.h,
                     ),
-                    Row(
-                      children: [
-                        Icon(Icons.alternate_email),
-                        SizedBox(
-                          width: 10.w,
-                        ),
-                        Expanded(child: Text('sanskriti@gmail.com'))
-                      ],
-                    ),
-                    SizedBox(
-                      height: 6.h,
-                    ),
-                    Row(
-                      children: [
-                        Icon(Icons.flag_outlined),
-                        SizedBox(
-                          width: 10.w,
-                        ),
-                        Expanded(child: Text('Nepal'))
-                      ],
-                    ),
+                    (bookingModel.email ?? '').isNotEmpty
+                        ? Row(
+                            children: [
+                              Icon(Icons.email_outlined),
+                              SizedBox(
+                                width: 10.w,
+                              ),
+                              Expanded(child: Text(bookingModel.email ?? ''))
+                            ],
+                          )
+                        : SizedBox(),
                   ],
                 ),
               ),
@@ -102,21 +121,52 @@ class BookConfirmationScreen extends StatelessWidget {
             SizedBox(
               height: 10.h,
             ),
-            Card(
-                child: ExpansionTile(
-              title: Text("Adult 1"),
-              expandedAlignment: Alignment.centerLeft,
-              children: [
-                Padding(
-                  padding: EdgeInsets.fromLTRB(16.sp, 0, 16.sp, 16.sp),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [Text('Sanskriti Pokharel'), Text('Nepal')],
-                  ),
-                )
-              ],
-            )),
+            ListView.builder(
+              shrinkWrap: true,
+              itemCount: bookingModel.passengersTxtFieldModel?.length ?? 0,
+              itemBuilder: (context, index) => Card(
+                  child: ExpansionTile(
+                title: Text(
+                  (bookingModel.passengersTxtFieldModel?[index].isChild ??
+                          false)
+                      ? 'Child ${index - (bookingModel.totalAdults ?? 1) + 1}'
+                      : 'Adult ${index + 1}',
+                ),
+                expandedAlignment: Alignment.centerLeft,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(16.sp, 0, 16.sp, 16.sp),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(getFullName(
+                            bookingModel.passengersTxtFieldModel?[index].title,
+                            bookingModel
+                                .passengersTxtFieldModel?[index].firstName,
+                            bookingModel
+                                .passengersTxtFieldModel?[index].middleName,
+                            bookingModel
+                                .passengersTxtFieldModel?[index].lastName)),
+                        Text(bookingModel
+                                .passengersTxtFieldModel?[index].nationality ??
+                            ''),
+                        Text(getDocumentType(bookingModel
+                                .passengersTxtFieldModel?[index].documentType ??
+                            '')),
+                        if ((bookingModel.passengersTxtFieldModel?[index]
+                                    .documentNumber ??
+                                'no-document') !=
+                            'no-document')
+                          Text(bookingModel.passengersTxtFieldModel?[index]
+                                  .documentNumber ??
+                              '')
+                      ],
+                    ),
+                  )
+                ],
+              )),
+            ),
             SizedBox(
               height: 10.h,
             ),
@@ -153,10 +203,65 @@ class BookConfirmationScreen extends StatelessWidget {
                   ),
                 ),
               ],
-            )
+            ),
+            SizedBox(
+              height: 15.h,
+            ),
+            DefaultButton('Book Now!', () async {
+              var cancel = BotToast.showLoading();
+
+              Either response =
+                  await BookingRepo.bookFlight(model: bookingModel);
+              response.fold((value) {
+                cancel();
+                locator<NavigationService>().popUntil('/');
+                showToast('Flight booked successfully',
+                    toastType: ToastType.success);
+              }, (failure) {
+                cancel();
+                showToast(failure.message, toastType: ToastType.error);
+              });
+            })
           ],
         )),
       )),
     );
+  }
+
+  String getFullName(
+      String? title, String? firstName, String? middleName, String? lastName) {
+    String fullName = '';
+    if (title != null) {
+      fullName += title;
+    }
+    if (firstName != null) {
+      fullName += ' $firstName';
+    }
+    if (middleName != null) {
+      fullName += ' $middleName';
+    }
+    if (lastName != null) {
+      fullName += ' $lastName';
+    }
+    return fullName.trim();
+  }
+
+  String getDocumentType(String? slug) {
+    switch (slug) {
+      case 'no-document':
+        return 'No Document';
+
+      case 'passport':
+        return 'Passport';
+
+      case 'citizenship':
+        return 'Citizenship';
+
+      case 'id-card':
+        return 'ID Card';
+
+      default:
+        return 'No Document';
+    }
   }
 }
