@@ -10,10 +10,28 @@ class AuthService {
 
   // Auth URLs
   static const String loginURL = "/login";
+  static const String registerURL = "/register";
 
   static Future<Either<ProfileModel, Failure>> login(
       {required String email, required String password}) async {
     Response response = await _apiManager.dio!.post(loginURL, data: {
+      'email': email,
+      'password': password,
+    });
+
+    return decodeJson(response).fold((value) {
+      return Left(ProfileModel.fromMap(value));
+    }, (failure) {
+      return Right(failure);
+    });
+  }
+
+  static Future<Either<ProfileModel, Failure>> register(
+      {required String fullName,
+      required String email,
+      required String password}) async {
+    Response response = await _apiManager.dio!.post(registerURL, data: {
+      'name': fullName,
       'email': email,
       'password': password,
     });
