@@ -58,6 +58,7 @@ dependencies:
   bot_toast: ^4.0.3
   form_field_validator: ^1.1.0
   image_picker: ^0.8.6
+  url_launcher: ^6.1.7
 
 dev_dependencies:
   flutter_test:

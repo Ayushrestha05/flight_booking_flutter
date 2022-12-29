@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flight_booking/core/constants/image_sources.dart';
+import 'package:flight_booking/core/constants/network_state.dart';
 import 'package:flight_booking/core/routes/route_names.dart';
 import 'package:flight_booking/core/services/navigation_service.dart';
 import 'package:flight_booking/core/services/service_locator.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -67,11 +69,19 @@ class ProfileScreen extends StatelessWidget {
                     ),
                     ListTile(
                       leading: Icon(Icons.policy),
+                      onTap: () {
+                        launchUrl(Uri.parse(baseServerUrl + "/terms"),
+                            mode: LaunchMode.externalApplication);
+                      },
                       title: Text("Terms and Conditions"),
                       trailing: Icon(Icons.chevron_right),
                     ),
                     ListTile(
                       leading: Icon(Icons.admin_panel_settings),
+                      onTap: () {
+                        launchUrl(Uri.parse(baseServerUrl + "/privacy"),
+                            mode: LaunchMode.externalApplication);
+                      },
                       title: Text("Privacy Policy"),
                       trailing: Icon(Icons.chevron_right),
                     ),

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_http_cache/dio_http_cache.dart';
+import 'package:flight_booking/core/constants/network_state.dart';
 import 'package:flight_booking/core/network/api_interceptor.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
@@ -15,7 +16,7 @@ class ApiManager {
 
   ApiManager() {
     BaseOptions options = BaseOptions(
-      baseUrl: "http://192.168.1.79:8000/api",
+      baseUrl: baseNetworkUrl,
       validateStatus: (status) {
         return status! < 500;
       },
