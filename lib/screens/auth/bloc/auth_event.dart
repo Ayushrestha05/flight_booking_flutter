@@ -21,4 +21,15 @@ class RegisterEvent extends AuthEvent {
       {required this.fullName, required this.email, required this.password});
 }
 
+class UpdateProfileEvent extends AuthEvent {
+  final String fullName;
+  final String password;
+  final File? image;
+
+  UpdateProfileEvent(
+      {required this.fullName,
+      required this.password,
+      this.image});
+}
+
 class LogoutEvent extends AuthEvent {}

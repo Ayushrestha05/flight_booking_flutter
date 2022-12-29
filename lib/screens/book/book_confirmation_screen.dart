@@ -185,7 +185,7 @@ class BookConfirmationScreen extends StatelessWidget {
                       border: Border.all(),
                       borderRadius: BorderRadius.circular(10.r)),
                   child: Image.asset(
-                    ImageSource.esewaIMG,
+                    AssetImageSource.esewaIMG,
                     height: 60.h,
                     width: 100.w,
                   ),
@@ -198,7 +198,7 @@ class BookConfirmationScreen extends StatelessWidget {
                       border: Border.all(),
                       borderRadius: BorderRadius.circular(10.r)),
                   child: Image.asset(
-                    ImageSource.khaltiIMG,
+                    AssetImageSource.khaltiIMG,
                     height: 60.h,
                     width: 100.w,
                   ),

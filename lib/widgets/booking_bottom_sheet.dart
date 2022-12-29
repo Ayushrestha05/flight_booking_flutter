@@ -64,11 +64,13 @@ showFlightBookingBottomSheet(
                   imageUrl: model?.company?.image ?? '',
                   placeholder: (context, url) => CircleAvatar(
                     radius: 25.r,
-                    backgroundImage: AssetImage(ImageSource.imagePlaceholder),
+                    backgroundImage:
+                        AssetImage(AssetImageSource.imagePlaceholder),
                   ),
                   errorWidget: (context, url, error) => CircleAvatar(
                     radius: 25.r,
-                    backgroundImage: AssetImage(ImageSource.imagePlaceholder),
+                    backgroundImage:
+                        AssetImage(AssetImageSource.imagePlaceholder),
                   ),
                   imageBuilder: (context, imageProvider) => CircleAvatar(
                     radius: 25.r,

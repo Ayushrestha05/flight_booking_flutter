@@ -5,7 +5,9 @@ class Routes {
   static const String loginScreen = '/login-screen';
   static const String registerScreen = '/register-screen';
   static const String homeScreen = "/home-screen";
+
   static const String profileScreen = "/profile-screen";
+  static const String editProfileScreen = "/edit-profile-screen";
 
   static const String flightListScreen = "/flight-list-screen";
   static const String returnFlightListScreen = "/return-flight-list-screen";

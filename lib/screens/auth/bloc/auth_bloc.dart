@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:bot_toast/bot_toast.dart';
 import 'package:dartz/dartz.dart';
@@ -26,11 +27,21 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       String? userData =
           locator<SharedPrefsServices>().getString(key: 'user_data');
 
-      if (token != null && userData != null) {
-        emit(AuthState(profileModel: ProfileModel.fromSharedPrefs(userData)));
-      } else {
-        emit(AuthState());
-      }
+      Either<ProfileModel, Failure> data = await AuthService.getProfile();
+
+      data.fold((value) {
+        locator<SharedPrefsServices>()
+            .setString(key: 'auth_token', value: value.token!);
+        locator<SharedPrefsServices>()
+            .setString(key: 'user_data', value: jsonEncode(value));
+        emit(AuthState(profileModel: value));
+      }, (r) {
+        if (token != null && userData != null) {
+          emit(AuthState(profileModel: ProfileModel.fromSharedPrefs(userData)));
+        } else {
+          emit(AuthState());
+        }
+      });
     });
 
     on<LoginEvent>((event, emit) async {
@@ -78,6 +89,25 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       locator<SharedPrefsServices>().remove(key: 'auth_token');
       locator<SharedPrefsServices>().remove(key: 'user_data');
       emit(AuthState());
+    });
+
+    on<UpdateProfileEvent>((event, emit) async {
+      var cancel = BotToast.showLoading();
+      Either<ProfileModel, Failure> data = await AuthService.updateProfile(
+          fullName: event.fullName,
+          password: event.password,
+          image: event.image);
+
+      data.fold((value) {
+        cancel();
+        locator<SharedPrefsServices>()
+            .setString(key: 'user_data', value: jsonEncode(value));
+        emit(state.copyWith(profileModel: value));
+        locator<NavigationService>().pop();
+      }, (failure) {
+        cancel();
+        showToast(failure.message, toastType: ToastType.error);
+      });
     });
   }
 }

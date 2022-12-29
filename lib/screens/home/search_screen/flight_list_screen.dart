@@ -106,7 +106,7 @@ class _FlightListScreenState extends State<FlightListScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SvgPicture.asset(
-                        ImageSource.noFlightSVG,
+                        AssetImageSource.noFlightSVG,
                         height: 100.h,
                         width: 100.w,
                       ),

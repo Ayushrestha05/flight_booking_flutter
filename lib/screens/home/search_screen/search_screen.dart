@@ -74,7 +74,7 @@ class _SearchScreenState extends State<SearchScreen>
                   right: 0,
                   bottom: 0,
                   child: SvgPicture.asset(
-                    ImageSource.nepalMap,
+                    AssetImageSource.nepalMap,
                     width: 250.w,
                     height: 142.5.h,
                   ),

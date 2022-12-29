@@ -106,7 +106,7 @@ class _ReturnFlightListScreenState extends State<ReturnFlightListScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SvgPicture.asset(
-                        ImageSource.noFlightSVG,
+                        AssetImageSource.noFlightSVG,
                         height: 100.h,
                         width: 100.w,
                       ),

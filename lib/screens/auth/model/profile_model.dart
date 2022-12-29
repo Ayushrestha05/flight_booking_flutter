@@ -31,7 +31,7 @@ class ProfileModel {
       id: map['user']['id'],
       name: map['user']['name'],
       email: map['user']['email'],
-      profileImage: map['user']['profileImage'],
+      profileImage: map['user']['profile_image'],
       token: map['token'],
     );
   }

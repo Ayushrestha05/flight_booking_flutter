@@ -34,12 +34,12 @@ Widget buildTicketCard(BuildContext context,
                       placeholder: (context, url) => CircleAvatar(
                         radius: 25.r,
                         backgroundImage:
-                            AssetImage(ImageSource.imagePlaceholder),
+                            AssetImage(AssetImageSource.imagePlaceholder),
                       ),
                       errorWidget: (context, url, error) => CircleAvatar(
                         radius: 25.r,
                         backgroundImage:
-                            AssetImage(ImageSource.imagePlaceholder),
+                            AssetImage(AssetImageSource.imagePlaceholder),
                       ),
                       imageBuilder: (context, imageProvider) => CircleAvatar(
                         radius: 25.r,
@@ -85,7 +85,7 @@ Widget buildTicketCard(BuildContext context,
                       ),
                       Row(
                         children: [
-                          SvgPicture.asset(ImageSource.smallPlane),
+                          SvgPicture.asset(AssetImageSource.smallPlane),
                           SizedBox(
                             width: 5.w,
                           ),
@@ -95,7 +95,7 @@ Widget buildTicketCard(BuildContext context,
                           SizedBox(
                             width: 10.w,
                           ),
-                          SvgPicture.asset(ImageSource.bagLimit),
+                          SvgPicture.asset(AssetImageSource.bagLimit),
                           SizedBox(
                             width: 5.w,
                           ),

@@ -49,7 +49,7 @@ Container departureDestinationWidget(
             ),
           ],
         )),
-        SvgPicture.asset(ImageSource.linearPlane, color: color),
+        SvgPicture.asset(AssetImageSource.linearPlane, color: color),
         Expanded(
             child: Row(
           children: [

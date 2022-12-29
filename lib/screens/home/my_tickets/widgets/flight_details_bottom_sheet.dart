@@ -58,11 +58,13 @@ showFlightDetailBottomSheet(BuildContext context,
                   imageUrl: model?.company?.image ?? '',
                   placeholder: (context, url) => CircleAvatar(
                     radius: 25.r,
-                    backgroundImage: AssetImage(ImageSource.imagePlaceholder),
+                    backgroundImage:
+                        AssetImage(AssetImageSource.imagePlaceholder),
                   ),
                   errorWidget: (context, url, error) => CircleAvatar(
                     radius: 25.r,
-                    backgroundImage: AssetImage(ImageSource.imagePlaceholder),
+                    backgroundImage:
+                        AssetImage(AssetImageSource.imagePlaceholder),
                   ),
                   imageBuilder: (context, imageProvider) => CircleAvatar(
                     radius: 25.r,
@@ -266,7 +268,7 @@ Widget buildFlightDetails({
                         'Flight No',
                         style: TextStyle(fontSize: 14.sp),
                       ),
-                      SvgPicture.asset(ImageSource.smallPlane),
+                      SvgPicture.asset(AssetImageSource.smallPlane),
                     ],
                   ),
                   SizedBox(
@@ -291,7 +293,7 @@ Widget buildFlightDetails({
                     crossAxisAlignment: CrossAxisAlignment.end,
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      SvgPicture.asset(ImageSource.bagLimit),
+                      SvgPicture.asset(AssetImageSource.bagLimit),
                       Text(
                         'Baggage Limit',
                         style: TextStyle(fontSize: 14.sp),

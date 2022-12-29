@@ -27,7 +27,7 @@ class LoginScreen extends StatelessWidget {
             children: [
               Expanded(
                   child: Image.asset(
-                ImageSource.boarding,
+                AssetImageSource.boarding,
                 width: double.maxFinite,
                 fit: BoxFit.cover,
                 excludeFromSemantics: true,

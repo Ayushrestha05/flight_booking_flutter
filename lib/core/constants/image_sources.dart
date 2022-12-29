@@ -1,4 +1,4 @@
-class ImageSource {
+class AssetImageSource {
   // Normal Images
   static String boarding = "assets/stocks/boarding.jpg";
   static String registerStock = "assets/stocks/register.jpg";
@@ -22,4 +22,5 @@ class ImageSource {
 
   //Placeholder Images
   static String imagePlaceholder = "assets/placeholder/image.jpg";
+  static String avatarPlaceholder = "assets/placeholder/avatar.png";
 }

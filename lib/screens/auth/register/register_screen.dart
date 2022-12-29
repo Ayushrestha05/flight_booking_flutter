@@ -34,7 +34,7 @@ class RegisterScreen extends StatelessWidget {
               child: Column(
                 children: [
                   Image.asset(
-                    ImageSource.registerStock,
+                    AssetImageSource.registerStock,
                     width: double.maxFinite,
                     fit: BoxFit.cover,
                     excludeFromSemantics: true,

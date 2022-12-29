@@ -3,8 +3,11 @@ import 'package:flight_booking/core/routes/export_routes.dart';
 import 'package:flight_booking/core/routes/route_names.dart';
 import 'package:flight_booking/core/services/service_locator.dart';
 import 'package:flight_booking/main.dart';
+import 'package:flight_booking/screens/auth/bloc/auth_bloc.dart';
+import 'package:flight_booking/screens/auth/model/profile_model.dart';
 import 'package:flight_booking/screens/home/explore_screen/bloc/bloc/explore_bloc.dart';
 import 'package:flight_booking/screens/home/my_tickets/model/my_ticket_model.dart';
+import 'package:flight_booking/screens/home/profile_screen/edit_profile/edit_profile_screen.dart';
 import 'package:flight_booking/screens/home/search_screen/bloc/depart/search_bloc.dart';
 import 'package:flight_booking/screens/home/search_screen/bloc/return/return_search_bloc.dart';
 import 'package:flight_booking/screens/home/search_screen/model/flight_search_view_model.dart';
@@ -91,6 +94,16 @@ class RouteGenerator {
             settings: settings,
             builder: (_) => BookingDetailsScreen(
                   model: arguments as MyTicketModel,
+                ));
+
+      case Routes.editProfileScreen:
+        return MaterialPageRoute(
+            settings: settings,
+            builder: (_) => BlocProvider.value(
+                  value: locator<AuthBloc>(),
+                  child: EditProfileScreen(
+                    profileModel: arguments as ProfileModel?,
+                  ),
                 ));
 
       default:

@@ -45,10 +45,10 @@ class BaseScreen extends StatelessWidget {
               }),
               type: BottomNavigationBarType.fixed,
               items: [
-                ImageSource.homeIcon,
-                ImageSource.searchIcon,
-                ImageSource.ticketIcon,
-                ImageSource.profileIcon,
+                AssetImageSource.homeIcon,
+                AssetImageSource.searchIcon,
+                AssetImageSource.ticketIcon,
+                AssetImageSource.profileIcon,
               ]
                   .map((e) => BottomNavigationBarItem(
                         icon: SvgPicture.asset(e),

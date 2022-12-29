@@ -9,6 +9,7 @@ class CustomTextFormField extends StatelessWidget {
   final int? maxLines;
   final TextStyle? textStyle;
   final TextEditingController? controller;
+  final bool? enabled;
   const CustomTextFormField(
       {Key? key,
       required this.hintText,
@@ -17,12 +18,14 @@ class CustomTextFormField extends StatelessWidget {
       this.onChanged,
       this.maxLines,
       this.textStyle,
+      this.enabled,
       this.controller})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      enabled: enabled ?? true,
       controller: controller,
       validator: validator,
       onSaved: onSaved,
