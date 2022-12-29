@@ -8,6 +8,7 @@ import 'package:flight_booking/screens/auth/model/profile_model.dart';
 import 'package:flight_booking/screens/home/explore_screen/bloc/bloc/explore_bloc.dart';
 import 'package:flight_booking/screens/home/my_tickets/model/my_ticket_model.dart';
 import 'package:flight_booking/screens/home/profile_screen/edit_profile/edit_profile_screen.dart';
+import 'package:flight_booking/screens/home/profile_screen/review_screen/review_screen.dart';
 import 'package:flight_booking/screens/home/search_screen/bloc/depart/search_bloc.dart';
 import 'package:flight_booking/screens/home/search_screen/bloc/return/return_search_bloc.dart';
 import 'package:flight_booking/screens/home/search_screen/model/flight_search_view_model.dart';
@@ -105,6 +106,10 @@ class RouteGenerator {
                     profileModel: arguments as ProfileModel?,
                   ),
                 ));
+
+      case Routes.reviewScreen:
+        return MaterialPageRoute(
+            settings: settings, builder: (_) => ReviewScreen());
 
       default:
         return MaterialPageRoute(

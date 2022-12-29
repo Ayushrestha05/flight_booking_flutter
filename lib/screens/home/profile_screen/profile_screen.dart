@@ -57,8 +57,9 @@ class ProfileScreen extends StatelessWidget {
                   child: Column(children: [
                     ListTile(
                       onTap: () {
-                        locator<NavigationService>()
-                            .navigateTo(Routes.editProfileScreen, arguments: state.profileModel);
+                        locator<NavigationService>().navigateTo(
+                            Routes.editProfileScreen,
+                            arguments: state.profileModel);
                       },
                       leading: Icon(Icons.edit),
                       title: Text("Edit Profile"),
@@ -75,6 +76,10 @@ class ProfileScreen extends StatelessWidget {
                       trailing: Icon(Icons.chevron_right),
                     ),
                     ListTile(
+                      onTap: () {
+                        locator<NavigationService>()
+                            .navigateTo(Routes.reviewScreen);
+                      },
                       leading: Icon(Icons.reviews),
                       title: Text("Review / Inquiry"),
                       trailing: Icon(Icons.chevron_right),
@@ -94,17 +99,17 @@ class ProfileScreen extends StatelessWidget {
                 Card(
                   child: Column(
                     children: [
-                      ListTile(
-                        leading: Icon(Icons.language),
-                        title: Text("Language"),
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text("English"),
-                            Icon(Icons.chevron_right),
-                          ],
-                        ),
-                      ),
+                      // ListTile(
+                      //   leading: Icon(Icons.language),
+                      //   title: Text("Language"),
+                      //   trailing: Row(
+                      //     mainAxisSize: MainAxisSize.min,
+                      //     children: [
+                      //       Text("English"),
+                      //       Icon(Icons.chevron_right),
+                      //     ],
+                      //   ),
+                      // ),
                       ListTile(
                         leading: Icon(Icons.dark_mode),
                         title: Text("Dark Mode"),

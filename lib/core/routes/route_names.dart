@@ -17,4 +17,5 @@ class Routes {
   static const String bookConfirmationScreen = '/book-confirmation-screen';
 
   static const String bookingDetailsScreen = '/booking-details-screen';
+  static const String reviewScreen = '/review-screen';
 }
