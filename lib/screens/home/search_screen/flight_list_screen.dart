@@ -55,6 +55,7 @@ class _FlightListScreenState extends State<FlightListScreen> {
                     IconButton(
                         onPressed: () {
                           showFlightSortBottomSheet(context);
+                          locator<SearchBloc>();
                         },
                         icon: Icon(Icons.sort))
                   ],
@@ -132,11 +133,26 @@ class _FlightListScreenState extends State<FlightListScreen> {
                             numberOfChildren:
                                 widget.flightSearchViewModel.numberOfChildren ??
                                     0,
+                            queryString: state.queryString,
                             page: (state.searchModel?.pagination?.currentPage ??
                                     1) +
                                 1));
                       },
-                      onRefresh: () {},
+                      onRefresh: () {
+                        locator<SearchBloc>().add(
+                          InitialSearchEvent(
+                              from: widget.flightSearchViewModel.from,
+                              to: widget.flightSearchViewModel.to,
+                              departureDate: DateFormat('yyyy-MM-dd').format(
+                                  widget.flightSearchViewModel.departureDate),
+                              numberOfAdults:
+                                  widget.flightSearchViewModel.numberOfAdults,
+                              numberOfChildren: widget
+                                      .flightSearchViewModel.numberOfChildren ??
+                                  0,
+                              queryString: state.queryString),
+                        );
+                      },
                       child: ListView.builder(
                         itemCount: state.searchModel?.flights?.length ?? 0,
                         itemBuilder: (context, index) {
@@ -170,6 +186,164 @@ class _FlightListScreenState extends State<FlightListScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  showFlightSortBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20.r), topRight: Radius.circular(20.r))),
+      builder: (context) {
+        return Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20.sp),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(
+                height: 20.h,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Flight Details',
+                    style: TextStyle(fontSize: 20.sp),
+                  ),
+                  IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: Icon(Icons.close))
+                ],
+              ),
+              SizedBox(
+                height: 12.h,
+              ),
+              ListTile(
+                onTap: () {
+                  locator<SearchBloc>().state.queryString = null;
+                  locator<SearchBloc>().add(
+                    InitialSearchEvent(
+                        from: widget.flightSearchViewModel.from,
+                        to: widget.flightSearchViewModel.to,
+                        departureDate: DateFormat('yyyy-MM-dd')
+                            .format(widget.flightSearchViewModel.departureDate),
+                        numberOfAdults:
+                            widget.flightSearchViewModel.numberOfAdults,
+                        numberOfChildren:
+                            widget.flightSearchViewModel.numberOfChildren ?? 0,
+                        queryString: null),
+                  );
+                  Navigator.pop(context);
+                },
+                title: Text('None'),
+              ),
+              ListTile(
+                onTap: () {
+                  locator<SearchBloc>().state.queryString = 'price-ascending';
+                  locator<SearchBloc>().add(
+                    InitialSearchEvent(
+                        from: widget.flightSearchViewModel.from,
+                        to: widget.flightSearchViewModel.to,
+                        departureDate: DateFormat('yyyy-MM-dd')
+                            .format(widget.flightSearchViewModel.departureDate),
+                        numberOfAdults:
+                            widget.flightSearchViewModel.numberOfAdults,
+                        numberOfChildren:
+                            widget.flightSearchViewModel.numberOfChildren ?? 0,
+                        queryString: 'price-ascending'),
+                  );
+                  Navigator.pop(context);
+                },
+                title: Text('Lowest Price'),
+              ),
+              ListTile(
+                onTap: () {
+                  locator<SearchBloc>().state.queryString = 'price-descending';
+                  locator<SearchBloc>().add(
+                    InitialSearchEvent(
+                        from: widget.flightSearchViewModel.from,
+                        to: widget.flightSearchViewModel.to,
+                        departureDate: DateFormat('yyyy-MM-dd')
+                            .format(widget.flightSearchViewModel.departureDate),
+                        numberOfAdults:
+                            widget.flightSearchViewModel.numberOfAdults,
+                        numberOfChildren:
+                            widget.flightSearchViewModel.numberOfChildren ?? 0,
+                        queryString: 'price-descending'),
+                  );
+                  Navigator.pop(context);
+                },
+                title: Text('Highest Price'),
+              ),
+              ListTile(
+                onTap: () {
+                  locator<SearchBloc>().state.queryString = 'short-duration';
+                  locator<SearchBloc>().add(
+                    InitialSearchEvent(
+                        from: widget.flightSearchViewModel.from,
+                        to: widget.flightSearchViewModel.to,
+                        departureDate: DateFormat('yyyy-MM-dd')
+                            .format(widget.flightSearchViewModel.departureDate),
+                        numberOfAdults:
+                            widget.flightSearchViewModel.numberOfAdults,
+                        numberOfChildren:
+                            widget.flightSearchViewModel.numberOfChildren ?? 0,
+                        queryString: 'short-duration'),
+                  );
+                  Navigator.pop(context);
+                },
+                title: Text('Shortest Duration'),
+              ),
+              ListTile(
+                onTap: () {
+                  locator<SearchBloc>().state.queryString = 'ascending';
+                  locator<SearchBloc>().add(
+                    InitialSearchEvent(
+                        from: widget.flightSearchViewModel.from,
+                        to: widget.flightSearchViewModel.to,
+                        departureDate: DateFormat('yyyy-MM-dd')
+                            .format(widget.flightSearchViewModel.departureDate),
+                        numberOfAdults:
+                            widget.flightSearchViewModel.numberOfAdults,
+                        numberOfChildren:
+                            widget.flightSearchViewModel.numberOfChildren ?? 0,
+                        queryString: 'ascending'),
+                  );
+                  Navigator.pop(context);
+                },
+                title: Text('Ascending Order'),
+              ),
+              ListTile(
+                onTap: () {
+                  locator<SearchBloc>().state.queryString = 'descending';
+                  locator<SearchBloc>().add(
+                    InitialSearchEvent(
+                        from: widget.flightSearchViewModel.from,
+                        to: widget.flightSearchViewModel.to,
+                        departureDate: DateFormat('yyyy-MM-dd')
+                            .format(widget.flightSearchViewModel.departureDate),
+                        numberOfAdults:
+                            widget.flightSearchViewModel.numberOfAdults,
+                        numberOfChildren:
+                            widget.flightSearchViewModel.numberOfChildren ?? 0,
+                        queryString: 'descending'),
+                  );
+                  Navigator.pop(context);
+                },
+                title: Text('Descending Order'),
+              ),
+              SizedBox(
+                height: 20.h,
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

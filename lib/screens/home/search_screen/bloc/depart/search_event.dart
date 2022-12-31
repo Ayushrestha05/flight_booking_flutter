@@ -11,6 +11,7 @@ class InitialSearchEvent extends SearchEvent {
   final String departureDate;
   final int numberOfAdults;
   final int numberOfChildren;
+  final String? queryString;
 
   const InitialSearchEvent({
     required this.from,
@@ -18,6 +19,7 @@ class InitialSearchEvent extends SearchEvent {
     required this.departureDate,
     required this.numberOfAdults,
     required this.numberOfChildren,
+    this.queryString,
   });
 }
 
@@ -28,6 +30,7 @@ class FetchMoreSearchEvent extends SearchEvent {
   final int numberOfAdults;
   final int numberOfChildren;
   final int page;
+  final String? queryString;
 
   const FetchMoreSearchEvent({
     required this.from,
@@ -36,5 +39,6 @@ class FetchMoreSearchEvent extends SearchEvent {
     required this.numberOfAdults,
     required this.numberOfChildren,
     required this.page,
+    this.queryString,
   });
 }

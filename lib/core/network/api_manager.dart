@@ -7,6 +7,9 @@ import 'package:flight_booking/core/constants/network_state.dart';
 import 'package:flight_booking/core/network/api_interceptor.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
+import '../services/service_locator.dart';
+import '../services/shared_pref_services.dart';
+
 class ApiManager {
   final int _connectTimeout = 1000000;
   final int _receiveTimeout = 1500000;
@@ -15,6 +18,16 @@ class ApiManager {
   DioCacheManager _dioCacheManager = DioCacheManager(CacheConfig());
 
   ApiManager() {
+    String? accessToken;
+    bool hasToken = locator<SharedPrefsServices>().getString(
+        key: "auth_token",
+      ) != null;
+    if (hasToken) {
+      accessToken = locator<SharedPrefsServices>().getString(
+        key: "auth_token",
+      );
+    }
+
     BaseOptions options = BaseOptions(
       baseUrl: baseNetworkUrl,
       validateStatus: (status) {
@@ -25,6 +38,7 @@ class ApiManager {
       contentType: Headers.jsonContentType,
       headers: {
         "Accept": "application/json",
+        if (hasToken) "Authorization": "Bearer $accessToken",
       },
     );
 

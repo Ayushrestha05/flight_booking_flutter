@@ -67,7 +67,7 @@ class _SearchScreenState extends State<SearchScreen>
           Expanded(
               child: Container(
             width: double.maxFinite,
-            margin: EdgeInsets.all(12.sp),
+            margin: EdgeInsets.symmetric(horizontal: 12.sp),
             child: Stack(
               children: [
                 Positioned(

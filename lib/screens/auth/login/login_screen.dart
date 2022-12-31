@@ -68,24 +68,14 @@ class LoginScreen extends StatelessWidget {
                       height: 20.h,
                     ),
                     DefaultButton("Sign In", () async {
+                      //Hide Keyboard
+                      FocusScope.of(context).unfocus();
                       locator<AuthBloc>().add(LoginEvent(
                           email: _emailController.text,
                           password: _passwordController.text));
                     }),
                     SizedBox(
                       height: 10.h,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (_) => ForgotPasswordScreen()));
-                      },
-                      child: Text(
-                        "Forgot Password",
-                        style: GoogleFonts.outfit(color: Colors.white),
-                      ),
                     ),
                     SizedBox(
                       height: 15.h,

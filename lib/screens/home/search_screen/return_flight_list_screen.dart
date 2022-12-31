@@ -55,7 +55,7 @@ class _ReturnFlightListScreenState extends State<ReturnFlightListScreen> {
                   actions: [
                     IconButton(
                         onPressed: () {
-                          showFlightSortBottomSheet(context);
+                          // showFlightSortBottomSheet(context);
                         },
                         icon: Icon(Icons.sort))
                   ],
@@ -136,7 +136,21 @@ class _ReturnFlightListScreenState extends State<ReturnFlightListScreen> {
                                     1) +
                                 1));
                       },
-                      onRefresh: () {},
+                      onRefresh: () {
+                        locator<ReturnSearchBloc>().add(
+                          InitialSearchEvent(
+                              from: widget.flightSearchViewModel.to,
+                              to: widget.flightSearchViewModel.from,
+                              departureDate: DateFormat('yyyy-MM-dd').format(
+                                  widget.flightSearchViewModel.returnDate ??
+                                      DateTime.now()),
+                              numberOfAdults:
+                                  widget.flightSearchViewModel.numberOfAdults,
+                              numberOfChildren: widget
+                                      .flightSearchViewModel.numberOfChildren ??
+                                  0),
+                        );
+                      },
                       child: ListView.builder(
                         itemCount: state.searchModel?.flights?.length ?? 0,
                         itemBuilder: (context, index) {
