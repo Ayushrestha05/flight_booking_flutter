@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flight_booking/bloc_provider.dart';
 import 'package:flight_booking/core/routes/route_names.dart';
+import 'package:flight_booking/core/services/cubit/theme_cubit.dart';
 import 'package:flight_booking/screens/auth/bloc/auth_bloc.dart';
 import 'package:flight_booking/screens/home/explore_screen/bloc/bloc/explore_bloc.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +41,6 @@ void main() async {
   FirebaseMessaging.onBackgroundMessage(backgroundHandler);
   FirebaseMessaging.instance.subscribeToTopic("all");
   token = (await FirebaseMessaging.instance.getToken())!;
-  print("Token: $token");
   await Future.wait(
     [
       setupLocator().then(
@@ -63,15 +63,13 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   void initState() {
+    locator<ThemeCubit>().checkTheme();
     super.initState();
     flutterLocalNotificationsPlugin.initialize(
       initializationSettings,
     );
 
-    FirebaseMessaging.instance.getInitialMessage().then((message) {
-      print("Get Initial Message");
-      if (message != null) {}
-    });
+    FirebaseMessaging.instance.getInitialMessage().then((message) {});
 
     //Foreground
     FirebaseMessaging.onMessage.listen((message) {
@@ -104,22 +102,30 @@ class _MyAppState extends State<MyApp> {
     return ScreenUtilInit(
         designSize: const Size(360, 640),
         builder: (context, child) {
-          return MaterialApp(
-            title: 'Flight Booking',
-            debugShowCheckedModeBanner: false,
-            theme: ThemeData(primaryColor: const Color(0xFF03314B)),
-            home: const AuthSwitchScreen(),
-            builder: BotToastInit(), //1. call BotToastInit
-            navigatorObservers: [BotToastNavigatorObserver()],
-            onGenerateRoute: RouteGenerator.generateRoute,
-            navigatorKey: NavigationService.navigatorKey,
-            routes: {
-              Routes.authSwitchScreen: (context) => const AuthSwitchScreen(),
-              Routes.baseScreen: (context) => BlocProvider.value(
-                    value: locator<ExploreBloc>()
-                      ..add(const FetchExploreEvent()),
-                    child: BaseScreen(),
-                  ),
+          return BlocBuilder<ThemeCubit, bool>(
+            builder: (context, state) {
+              return MaterialApp(
+                title: 'Flight Booking',
+                debugShowCheckedModeBanner: false,
+                theme: state
+                    ? ThemeData.dark()
+                    : ThemeData.light()
+                        .copyWith(primaryColor: const Color(0xFF03314B)),
+                home: const AuthSwitchScreen(),
+                builder: BotToastInit(), //1. call BotToastInit
+                navigatorObservers: [BotToastNavigatorObserver()],
+                onGenerateRoute: RouteGenerator.generateRoute,
+                navigatorKey: NavigationService.navigatorKey,
+                routes: {
+                  Routes.authSwitchScreen: (context) =>
+                      const AuthSwitchScreen(),
+                  Routes.baseScreen: (context) => BlocProvider.value(
+                        value: locator<ExploreBloc>()
+                          ..add(const FetchExploreEvent()),
+                        child: BaseScreen(),
+                      ),
+                },
+              );
             },
           );
         });

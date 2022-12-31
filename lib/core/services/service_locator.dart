@@ -1,5 +1,6 @@
 import 'package:flight_booking/core/network/api_manager.dart';
 import 'package:flight_booking/core/services/cubit/navigation_cubit.dart';
+import 'package:flight_booking/core/services/cubit/theme_cubit.dart';
 import 'package:flight_booking/core/services/navigation_service.dart';
 import 'package:flight_booking/core/services/shared_pref_services.dart';
 import 'package:flight_booking/screens/auth/bloc/auth_bloc.dart';
@@ -23,4 +24,5 @@ Future<void> setupLocator() async {
   locator.registerLazySingleton<ReturnSearchBloc>(() => ReturnSearchBloc());
   locator.registerLazySingleton<MyTicketBloc>(() => MyTicketBloc());
   locator.registerLazySingleton<NavigationCubit>(() => NavigationCubit());
+  locator.registerLazySingleton<ThemeCubit>(() => ThemeCubit());
 }

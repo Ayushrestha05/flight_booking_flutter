@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flight_booking/core/constants/image_sources.dart';
 import 'package:flight_booking/core/constants/network_state.dart';
 import 'package:flight_booking/core/routes/route_names.dart';
+import 'package:flight_booking/core/services/cubit/theme_cubit.dart';
 import 'package:flight_booking/core/services/navigation_service.dart';
 import 'package:flight_booking/core/services/service_locator.dart';
 import 'package:flight_booking/screens/auth/bloc/auth_bloc.dart';
@@ -109,22 +110,18 @@ class ProfileScreen extends StatelessWidget {
                 Card(
                   child: Column(
                     children: [
-                      // ListTile(
-                      //   leading: Icon(Icons.language),
-                      //   title: Text("Language"),
-                      //   trailing: Row(
-                      //     mainAxisSize: MainAxisSize.min,
-                      //     children: [
-                      //       Text("English"),
-                      //       Icon(Icons.chevron_right),
-                      //     ],
-                      //   ),
-                      // ),
-                      ListTile(
-                        leading: Icon(Icons.dark_mode),
-                        title: Text("Dark Mode"),
-                        trailing: CupertinoSwitch(
-                            value: false, onChanged: (value) {}),
+                      BlocBuilder<ThemeCubit, bool>(
+                        builder: (context, state) {
+                          return ListTile(
+                            leading: Icon(Icons.dark_mode),
+                            title: Text("Dark Mode"),
+                            trailing: CupertinoSwitch(
+                                value: state,
+                                onChanged: (value) {
+                                  locator<ThemeCubit>().toggleTheme();
+                                }),
+                          );
+                        },
                       ),
                       ListTile(
                         onTap: () {
