@@ -36,7 +36,10 @@ class BaseScreen extends StatelessWidget {
           builder: (context, page, _) {
             return BottomNavigationBar(
               currentIndex: page,
-              selectedItemColor: Colors.black,
+              selectedItemColor:
+                  Theme.of(context).brightness == Brightness.light
+                      ? Colors.white
+                      : Colors.black,
               onTap: ((value) {
                 _currentPage.value = value;
                 _controller.animateToPage(value,
@@ -55,7 +58,10 @@ class BaseScreen extends StatelessWidget {
                         activeIcon: SvgPicture.asset(
                           e,
                           //TODO Change Color to Theme Color Later on
-                          color: Color(0xFF03314B),
+                          color:
+                              Theme.of(context).brightness == Brightness.light
+                                  ? Color(0xFF03314B)
+                                  : Colors.blue,
                         ),
                         label: "",
                       ))

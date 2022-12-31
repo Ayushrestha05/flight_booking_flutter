@@ -86,9 +86,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     });
 
     on<LogoutEvent>((event, emit) async {
-      locator<SharedPrefsServices>().remove(key: 'auth_token');
-      locator<SharedPrefsServices>().remove(key: 'user_data');
-      emit(AuthState());
+      Either<bool, Failure> data = await AuthService.logout();
+      data.fold((value) {
+        showToast("Logged Out Successfully", toastType: ToastType.success);
+        locator<SharedPrefsServices>().remove(key: 'auth_token');
+        locator<SharedPrefsServices>().remove(key: 'user_data');
+        emit(AuthState());
+      }, (failure) {
+        locator<SharedPrefsServices>().remove(key: 'auth_token');
+        locator<SharedPrefsServices>().remove(key: 'user_data');
+        emit(AuthState());
+      });
     });
 
     on<UpdateProfileEvent>((event, emit) async {

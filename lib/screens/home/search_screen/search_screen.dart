@@ -7,6 +7,7 @@ import 'package:flight_booking/core/constants/image_sources.dart';
 import 'package:flight_booking/core/routes/route_names.dart';
 import 'package:flight_booking/core/services/navigation_service.dart';
 import 'package:flight_booking/core/services/service_locator.dart';
+import 'package:flight_booking/core/utils/show_toast.dart';
 import 'package:flight_booking/screens/home/search_screen/model/flight_search_view_model.dart';
 import 'package:flight_booking/widgets/buttons.dart';
 import 'package:flutter/material.dart';
@@ -108,7 +109,10 @@ class _SearchScreenState extends State<SearchScreen>
                     ),
                     Container(
                       decoration: BoxDecoration(
-                          color: Color(0xFFF6F6F4),
+                          color:
+                              Theme.of(context).brightness == Brightness.light
+                                  ? Color(0xFFF6F6F4)
+                                  : Color(0xFF303030),
                           borderRadius: BorderRadius.circular(10.r)),
                       child: TabBar(
                         controller: _tabController,
@@ -221,7 +225,6 @@ class _SearchScreenState extends State<SearchScreen>
                                     style: TextStyle(
                                         fontFamily: "SFPro",
                                         fontWeight: FontWeight.bold,
-                                        color: Colors.black,
                                         fontSize: 14.sp)))
                           ],
                         ),
@@ -243,6 +246,9 @@ class _SearchScreenState extends State<SearchScreen>
                                   numberOfAdults: adultCount ?? 1,
                                   numberOfChildren: childCount,
                                 ));
+                      } else {
+                        showToast("Please select all fields",
+                            toastType: ToastType.info);
                       }
                     })
                   ],

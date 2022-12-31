@@ -9,6 +9,8 @@ import 'package:flight_booking/core/utils/decode_api.dart';
 import 'package:flight_booking/core/utils/show_toast.dart';
 import 'package:flight_booking/screens/home/my_tickets/model/my_ticket_model.dart';
 
+import '../../../core/services/get_headers.dart';
+
 class BookingRepo {
   static final ApiManager _apiManager = ApiManager();
   static final bookingURL = '/book-flight';
@@ -38,7 +40,8 @@ class BookingRepo {
   }
 
   static Future<Either<List<MyTicketModel>, Failure>> getBookings() async {
-    Response response = await _apiManager.dio!.get(getBookingsURL);
+    Response response = await _apiManager.dio!
+        .get(getBookingsURL, options: Options(headers: getHeaders()));
     return decodeJson(response).fold((l) {
       return Left(
           l.map<MyTicketModel>((e) => MyTicketModel.fromMap(e)).toList());
