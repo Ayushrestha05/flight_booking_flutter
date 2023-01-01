@@ -2,12 +2,15 @@
 import 'dart:convert';
 
 import 'package:flight_booking/core/model/flight_model.dart';
+import 'package:flight_booking/core/model/top_route_model.dart';
 
 class ExploreModel {
   List<FlightModel>? newFlights;
+  List<TopRouteModel>? topRoutes;
 
   ExploreModel({
     this.newFlights,
+    this.topRoutes,
   });
 
   Map<String, dynamic> toMap() {
@@ -21,6 +24,11 @@ class ExploreModel {
       newFlights: map['new_flights'] != null
           ? map['new_flights']
               .map<FlightModel>((x) => FlightModel.fromMap(x))
+              .toList()
+          : null,
+      topRoutes: map['top_routes'] != null
+          ? map['top_routes']
+              .map<TopRouteModel>((x) => TopRouteModel.fromMap(x))
               .toList()
           : null,
     );

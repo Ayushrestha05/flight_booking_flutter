@@ -59,6 +59,7 @@ dependencies:
   form_field_validator: ^1.1.0
   image_picker: ^0.8.6
   url_launcher: ^6.1.7
+  card_swiper: ^2.0.4
 
   flutter_local_notifications: ^13.0.0
   firebase_core: ^2.4.1
@@ -94,6 +95,7 @@ flutter:
     - assets/svg_icons/
     - assets/images/
     - assets/placeholder/
+    - assets/locations/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

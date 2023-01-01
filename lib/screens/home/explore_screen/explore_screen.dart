@@ -1,5 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:card_swiper/card_swiper.dart';
+import 'package:flight_booking/core/constants/image_sources.dart';
 import 'package:flight_booking/core/model/flight_model.dart';
+import 'package:flight_booking/core/model/top_route_model.dart';
 import 'package:flight_booking/core/services/cubit/navigation_cubit.dart';
 import 'package:flight_booking/core/services/service_locator.dart';
 import 'package:flight_booking/screens/auth/bloc/auth_bloc.dart';
@@ -11,6 +14,7 @@ import 'package:flight_booking/widgets/ticketCard_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ExploreScreen extends StatelessWidget {
   const ExploreScreen({super.key});
@@ -40,7 +44,7 @@ class ExploreScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Popular Routes",
+            "Most Flight Routes",
             style: TextStyle(
                 fontFamily: "SFPro",
                 fontWeight: FontWeight.bold,
@@ -49,40 +53,17 @@ class ExploreScreen extends StatelessWidget {
           SizedBox(
             height: 15.h,
           ),
-          Card(
-            clipBehavior: Clip.antiAlias,
-            child: Column(
-              children: [
-                Container(
-                  height: 100.h,
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: CachedNetworkImage(
-                            fit: BoxFit.cover,
-                            imageUrl:
-                                "https://images.unsplash.com/photo-1507743617593-0a422c9bb7f5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80"),
-                      ),
-                      Expanded(
-                        child: CachedNetworkImage(
-                            fit: BoxFit.cover,
-                            imageUrl:
-                                "https://images.unsplash.com/photo-1576948187290-457c015b3bff?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                departureDestinationWidget(
-                    context: context,
-                    departCode: "KTM",
-                    destinationCode: "PKR"),
-                SizedBox(
-                  height: 10.h,
-                ),
-              ],
+          Container(
+            height: 90.h,
+            child: Swiper(
+              itemCount: state.exploreModel?.topRoutes?.length ?? 0,
+              loop: false,
+              itemBuilder: (context, index) {
+                TopRouteModel? model = state.exploreModel?.topRoutes?[index];
+                return topRouteCard(context, model);
+              },
+              viewportFraction: 1,
+              scale: 1,
             ),
           ),
           SizedBox(
@@ -108,6 +89,54 @@ class ExploreScreen extends StatelessWidget {
                   showFlightDetailBottomSheet(context, model: model!);
                 });
               })
+        ],
+      ),
+    );
+  }
+
+  Card topRouteCard(BuildContext context, TopRouteModel? model) {
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      child: Column(
+        children: [
+          // Container(
+          //   height: 100.h,
+          //   child: Row(
+          //     children: [
+          //       Expanded(
+          //         child: Image.asset(
+          //           "assets/locations/${model?.from_location ?? 'KTM'}.jpg",
+          //           fit: BoxFit.cover,
+          //         ),
+          //       ),
+          //       Expanded(
+          //         child: CachedNetworkImage(
+          //           fit: BoxFit.cover,
+          //           imageUrl:
+          //               "assets/locations/${model?.to_location ?? 'PKR'}.jpg",
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
+          SizedBox(
+            height: 10.h,
+          ),
+          departureDestinationWidget(
+              context: context,
+              departCode: "${model?.from_location ?? 'KTM'}",
+              destinationCode: "${model?.to_location ?? 'PKR'}"),
+          SizedBox(
+            height: 5.h,
+          ),
+          Divider(),
+          // SizedBox(
+          //   height: 5.h,
+          // ),
+          Text(
+            'Total Flights: ${model?.total ?? 0}',
+            style: TextStyle(fontFamily: 'SFPro', fontSize: 16.sp),
+          )
         ],
       ),
     );

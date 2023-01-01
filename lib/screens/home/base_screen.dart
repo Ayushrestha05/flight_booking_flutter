@@ -9,10 +9,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class BaseScreen extends StatelessWidget {
-  final PageController _controller = locator<NavigationCubit>().state;
-  final ValueNotifier<int> _currentPage = ValueNotifier(0);
+class BaseScreen extends StatefulWidget {
   BaseScreen({super.key});
+
+  @override
+  State<BaseScreen> createState() => _BaseScreenState();
+}
+
+class _BaseScreenState extends State<BaseScreen> {
+  final PageController _controller = locator<NavigationCubit>().state;
+
+  final ValueNotifier<int> _currentPage = ValueNotifier(0);
+
+  @override
+  void initState() {
+    if (locator<NavigationCubit>().state.hasClients) {
+      _currentPage.value = locator<NavigationCubit>().state.page!.toInt();
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +72,6 @@ class BaseScreen extends StatelessWidget {
                         icon: SvgPicture.asset(e),
                         activeIcon: SvgPicture.asset(
                           e,
-                          //TODO Change Color to Theme Color Later on
                           color:
                               Theme.of(context).brightness == Brightness.light
                                   ? Color(0xFF03314B)
