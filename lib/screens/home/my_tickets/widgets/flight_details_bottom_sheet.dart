@@ -112,9 +112,7 @@ showFlightDetailBottomSheet(BuildContext context,
                         child: Container(
                           decoration: BoxDecoration(
                               border: Border.all(
-                                  color: value == currentClass.id
-                                      ? Colors.blue
-                                      : Colors.grey,
+                                  color: Colors.grey,
                                   width: value == currentClass.id ? 2 : 1),
                               borderRadius: BorderRadius.circular(10.r)),
                           child: Column(
@@ -139,10 +137,10 @@ showFlightDetailBottomSheet(BuildContext context,
               height: 15.h,
             ),
             // Book Button
-            DefaultButton("Book Flight", onBookTap ?? () {}),
-            SizedBox(
-              height: 15.h,
-            ),
+            // DefaultButton("Book Flight", onBookTap ?? () {}),
+            // SizedBox(
+            //   height: 15.h,
+            // ),
           ],
         ),
       );
