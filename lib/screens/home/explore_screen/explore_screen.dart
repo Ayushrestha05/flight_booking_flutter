@@ -3,11 +3,15 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:flight_booking/core/constants/image_sources.dart';
 import 'package:flight_booking/core/model/flight_model.dart';
 import 'package:flight_booking/core/model/top_route_model.dart';
+import 'package:flight_booking/core/routes/route_names.dart';
 import 'package:flight_booking/core/services/cubit/navigation_cubit.dart';
+import 'package:flight_booking/core/services/navigation_service.dart';
 import 'package:flight_booking/core/services/service_locator.dart';
 import 'package:flight_booking/screens/auth/bloc/auth_bloc.dart';
 import 'package:flight_booking/screens/home/explore_screen/bloc/bloc/explore_bloc.dart';
 import 'package:flight_booking/screens/home/my_tickets/widgets/flight_details_bottom_sheet.dart';
+import 'package:flight_booking/screens/home/weather/bloc/weather_bloc.dart';
+import 'package:flight_booking/screens/home/weather/widgets/weather_code.dart';
 import 'package:flight_booking/widgets/buttons.dart';
 import 'package:flight_booking/widgets/departDestination_widget.dart';
 import 'package:flight_booking/widgets/ticketCard_widget.dart';
@@ -148,34 +152,101 @@ class ExploreScreen extends StatelessWidget {
       // height: 175.h,
       padding: EdgeInsets.all(15.sp),
       color: const Color(0xFF03314B),
-      child: Column(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "Hey,",
-            style: TextStyle(
-                fontFamily: "SFPro", fontSize: 20.sp, color: Colors.white),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Expanded(
+                        child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Hey,",
+                          style: TextStyle(
+                              fontFamily: "SFPro",
+                              fontSize: 20.sp,
+                              color: Colors.white),
+                        ),
+                        Text(
+                            locator<AuthBloc>().state.profileModel!.name ??
+                                'User',
+                            style: TextStyle(
+                                fontFamily: "SFPro",
+                                fontWeight: FontWeight.bold,
+                                fontSize: 24.sp,
+                                color: Colors.white)),
+                      ],
+                    )),
+                    BlocBuilder<WeatherBloc, WeatherState>(
+                      builder: (context, state) {
+                        return GestureDetector(
+                          onTap: () {
+                            locator<NavigationService>()
+                                .navigateTo(Routes.weatherScreen);
+                          },
+                          child: state.weatherModel != null
+                              ? Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(
+                                      getWeatherIcon(
+                                          weatherCode: state
+                                                  .weatherModel
+                                                  ?.currentWeather
+                                                  ?.weathercode ??
+                                              0),
+                                      color: Colors.white,
+                                    ),
+                                    SizedBox(
+                                      width: 5.w,
+                                    ),
+                                    state.weatherModel?.currentWeather
+                                                ?.temperature !=
+                                            null
+                                        ? Text(
+                                            "${state.weatherModel?.currentWeather?.temperature.toString()} °C",
+                                            style: TextStyle(
+                                                fontFamily: "SFPro",
+                                                fontSize: 16.sp,
+                                                color: Colors.white),
+                                          )
+                                        : Container()
+                                  ],
+                                )
+                              : Container(),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 20.h,
+                ),
+                Text(
+                  "Want to book a Flight?",
+                  style: TextStyle(
+                      fontFamily: "SFPro",
+                      fontSize: 20.sp,
+                      color: Colors.white),
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                DefaultButton("Search for Flights now!", () {
+                  locator<NavigationCubit>().state.jumpToPage(1);
+                }),
+              ],
+            ),
           ),
-          Text(locator<AuthBloc>().state.profileModel!.name ?? 'User',
-              style: TextStyle(
-                  fontFamily: "SFPro",
-                  fontWeight: FontWeight.bold,
-                  fontSize: 24.sp,
-                  color: Colors.white)),
-          SizedBox(
-            height: 20.h,
-          ),
-          Text(
-            "Want to book a Flight?",
-            style: TextStyle(
-                fontFamily: "SFPro", fontSize: 20.sp, color: Colors.white),
-          ),
-          SizedBox(
-            height: 10.h,
-          ),
-          DefaultButton("Search for Flights now!", () {
-            locator<NavigationCubit>().state.jumpToPage(1);
-          }),
         ],
       ),
     );

@@ -18,4 +18,5 @@ class Routes {
 
   static const String bookingDetailsScreen = '/booking-details-screen';
   static const String reviewScreen = '/review-screen';
+  static const String weatherScreen = '/weather-screen';
 }

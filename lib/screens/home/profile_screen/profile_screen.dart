@@ -1,16 +1,28 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:bot_toast/bot_toast.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dio/dio.dart';
 import 'package:flight_booking/core/constants/image_sources.dart';
 import 'package:flight_booking/core/constants/network_state.dart';
 import 'package:flight_booking/core/routes/route_names.dart';
 import 'package:flight_booking/core/services/cubit/theme_cubit.dart';
 import 'package:flight_booking/core/services/navigation_service.dart';
 import 'package:flight_booking/core/services/service_locator.dart';
+import 'package:flight_booking/core/utils/show_toast.dart';
 import 'package:flight_booking/screens/auth/bloc/auth_bloc.dart';
+import 'package:flight_booking/screens/home/my_tickets/model/my_ticket_model.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:qrscan/qrscan.dart' as scanner;
+
+import '../../../core/network/api_manager.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -95,6 +107,14 @@ class ProfileScreen extends StatelessWidget {
                       title: Text("Review / Inquiry"),
                       trailing: Icon(Icons.chevron_right),
                     ),
+                    ListTile(
+                      onTap: () async {
+                        _showBottomSheetModel(context);
+                      },
+                      leading: Icon(Icons.qr_code_scanner),
+                      title: Text("Flight QR Scanner"),
+                      trailing: Icon(Icons.chevron_right),
+                    ),
                   ]),
                 ),
                 Container(
@@ -140,5 +160,127 @@ class ProfileScreen extends StatelessWidget {
         );
       },
     );
+  }
+
+  _showBottomSheetModel(BuildContext context) async {
+    showModalBottomSheet(
+        backgroundColor: Colors.transparent,
+        context: context,
+        builder: (_) {
+          return Container(
+              decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30)),
+                  color: Colors.white),
+              height: 150.h,
+              child: Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    InkWell(
+                      onTap: () async {
+                        Navigator.pop(context);
+                        // Camera
+                        XFile? file = await ImagePicker()
+                            .pickImage(source: ImageSource.camera);
+                        if (file != null) {
+                          Uint8List bytes = await file.readAsBytes();
+                          String barcode = await scanner.scanBytes(bytes);
+                          if (RegExp('(fqr_[0-9]*)').hasMatch(barcode)) {
+                            getTicketData(barcode.replaceAll('fqr_', ''));
+                          } else {
+                            showToast('Invalid QR Code',
+                                toastType: ToastType.error);
+                          }
+                        }
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(
+                            Icons.camera_alt,
+                            size: 30,
+                          ),
+                          SizedBox(
+                            height: 4.h,
+                          ),
+                          Text(
+                            'Camera',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText1!
+                                .copyWith(fontSize: 15.sp),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      width: 80.w,
+                    ),
+                    InkWell(
+                      onTap: () async {
+                        Navigator.pop(context);
+                        //Gallery
+                        XFile? file = await ImagePicker()
+                            .pickImage(source: ImageSource.gallery);
+                        if (file != null) {
+                          Uint8List bytes = await file.readAsBytes();
+                          String barcode = await scanner.scanBytes(bytes);
+                          if (RegExp('(fqr_[0-9]*)').hasMatch(barcode)) {
+                            getTicketData(barcode.replaceAll('fqr_', ''));
+                          } else {
+                            showToast('Invalid QR Code',
+                                toastType: ToastType.error);
+                          }
+                        }
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(
+                            Icons.photo,
+                            size: 30,
+                          ),
+                          SizedBox(
+                            height: 4.h,
+                          ),
+                          Text(
+                            'Gallery',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText1!
+                                .copyWith(fontSize: 15.sp),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ));
+        });
+  }
+
+  getTicketData(String ticketID) async {
+    var cancel = BotToast.showLoading();
+    final ApiManager _apiManager = ApiManager();
+    final ticketQRURL = '/get-ticket-qr';
+
+    Response response = await _apiManager.dio!.post(ticketQRURL, data: {
+      'ticket_id': ticketID,
+    });
+
+    var data = response.data['data'];
+    if (data == null) {
+      showToast('Invalid QR Code', toastType: ToastType.error);
+    } else if (data.length == 0) {
+      showToast('Invalid QR Code', toastType: ToastType.error);
+    } else {
+      List<MyTicketModel> ticketList = [];
+      data.map((e) => ticketList.add(MyTicketModel.fromMap(e))).toList();
+      locator<NavigationService>()
+          .navigateTo(Routes.bookingDetailsScreen, arguments: ticketList.first);
+    }
+    cancel();
   }
 }

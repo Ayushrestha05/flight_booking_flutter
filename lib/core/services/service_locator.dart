@@ -8,6 +8,7 @@ import 'package:flight_booking/screens/home/explore_screen/bloc/bloc/explore_blo
 import 'package:flight_booking/screens/home/my_tickets/bloc/my_ticket_bloc.dart';
 import 'package:flight_booking/screens/home/search_screen/bloc/depart/search_bloc.dart';
 import 'package:flight_booking/screens/home/search_screen/bloc/return/return_search_bloc.dart';
+import 'package:flight_booking/screens/home/weather/bloc/weather_bloc.dart';
 import 'package:get_it/get_it.dart';
 
 GetIt locator = GetIt.instance;
@@ -25,4 +26,5 @@ Future<void> setupLocator() async {
   locator.registerLazySingleton<MyTicketBloc>(() => MyTicketBloc());
   locator.registerLazySingleton<NavigationCubit>(() => NavigationCubit());
   locator.registerLazySingleton<ThemeCubit>(() => ThemeCubit());
+  locator.registerLazySingleton<WeatherBloc>(() => WeatherBloc());
 }

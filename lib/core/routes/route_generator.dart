@@ -17,6 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../screens/home/booking_details/booking_details_screen.dart';
+import '../../screens/home/weather/weather_screen.dart';
 
 class RouteGenerator {
   RouteGenerator._();
@@ -106,6 +107,10 @@ class RouteGenerator {
                     profileModel: arguments as ProfileModel?,
                   ),
                 ));
+
+      case Routes.weatherScreen:
+        return MaterialPageRoute(
+            settings: settings, builder: (_) => WeatherScreen());
 
       case Routes.reviewScreen:
         return MaterialPageRoute(

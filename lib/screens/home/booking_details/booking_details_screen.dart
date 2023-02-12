@@ -3,6 +3,7 @@ import 'package:flight_booking/widgets/screen_padding.dart';
 import 'package:flight_booking/widgets/ticketCard_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class BookingDetailsScreen extends StatelessWidget {
   final MyTicketModel model;
@@ -155,6 +156,23 @@ class BookingDetailsScreen extends StatelessWidget {
                     )
                   ],
                 )),
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
+              Text(
+                'Flight QR',
+                style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
+              Center(
+                child: QrImage(
+                  data: 'fqr_${model.id}',
+                  version: QrVersions.auto,
+                  size: 150.sp,
+                ),
               ),
               SizedBox(
                 height: 10.h,
